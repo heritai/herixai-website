@@ -42,3 +42,5 @@ fi
 echo "🎉 Website is now live!"
 echo "📍 URL: https://$BUCKET_NAME"
 
+
+
