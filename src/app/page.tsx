@@ -1,4 +1,5 @@
 "use client";
+// Test deployment - GitHub Actions CI/CD
 
 import { useState, useMemo, useEffect } from "react";
 import Image from "next/image";
