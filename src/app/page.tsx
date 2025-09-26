@@ -167,6 +167,74 @@ const t = (lang: Lang) => ({
         github: "https://github.com/heritai/roomify-pricing-dashboard",
         featured: true
       },
+      { 
+        title: lang === "fr" ? "Rester en avance sur les risques avec la détection d'anomalies alimentée par l'IA" : "Stay ahead of risks with AI-powered anomaly detection",
+        description: lang === "fr"
+          ? "Beaucoup d'entreprises perdent de l'argent à cause de la fraude, d'erreurs système ou de pics de transactions inhabituels car elles manquent d'outils de surveillance en temps réel."
+          : "Many companies lose money to fraud, system errors, or unusual transaction spikes because they lack real-time monitoring tools.",
+        solution: lang === "fr"
+          ? "La solution est un tableau de bord qui surveille les transactions en temps réel, signale les anomalies et fournit des insights métier clairs."
+          : "A dashboard that monitors transactions in real time, flags anomalies, and provides clear business insights.",
+        details: lang === "fr"
+          ? "TransacGuard a aidé à réduire les risques financiers, détecter la fraude plus tôt et améliorer la fiabilité opérationnelle avec des insights transparents pour les décideurs."
+          : "TransacGuard helped reduce financial risks, detect fraud earlier, and improve operational reliability with transparent insights for decision-makers.",
+        stack: "Streamlit, Anomaly Detection, ML, Python", 
+        image: "/images/transacguard.png",
+        demo: "https://transacguard.streamlit.app/",
+        github: "https://github.com/heritai/transacguard-anomaly-dashboard",
+        featured: true
+      },
+      { 
+        title: lang === "fr" ? "Maximiser les ventes et le ROI avec l'optimisation marketing alimentée par l'IA" : "Maximize sales and ROI with AI-powered marketing optimization",
+        description: lang === "fr"
+          ? "Beaucoup d'entreprises dépensent trop sur des campagnes qui ne convertissent pas, gaspillant une grande partie de leur budget marketing."
+          : "Many companies overspend on campaigns that don't convert, wasting large portions of their marketing budget.",
+        solution: lang === "fr"
+          ? "La solution est un tableau de bord qui lie les dépenses marketing aux ventes, prédit le ROI et suggère de meilleures allocations budgétaires par canal."
+          : "A dashboard that links marketing spend to sales, predicts ROI, and suggests better budget allocations across channels.",
+        details: lang === "fr"
+          ? "AdOptima a amélioré le ROI et boosté les ventes en réallouant les budgets basés sur des insights alimentés par l'IA."
+          : "AdOptima improved ROI and boosted sales by reallocating budgets based on AI-driven insights.",
+        stack: "Streamlit, Marketing Analytics, ML, Python", 
+        image: "/images/adoptima.png",
+        demo: "https://adoptima.streamlit.app/",
+        github: "https://github.com/heritai/adoptima-marketing-dashboard",
+        featured: true
+      },
+      { 
+        title: lang === "fr" ? "Réduire les coûts de main-d'œuvre et améliorer l'efficacité avec la planification de personnel alimentée par l'IA" : "Cut labor costs and improve efficiency with AI-driven workforce scheduling",
+        description: lang === "fr"
+          ? "La planification manuelle cause des heures supplémentaires, une mauvaise couverture et des employés mécontents."
+          : "Manual scheduling causes overtime, poor coverage, and unhappy employees.",
+        solution: lang === "fr"
+          ? "La solution est un tableau de bord qui génère des plannings optimisés basés sur la demande, la disponibilité et les règles de travail."
+          : "A dashboard that generates optimized schedules based on demand, availability, and labor rules.",
+        details: lang === "fr"
+          ? "ShiftWise a réduit les coûts de main-d'œuvre, amélioré la couverture des équipes et libéré les managers de heures de planification manuelle."
+          : "ShiftWise reduced labor costs, improved shift coverage, and freed managers from hours of manual planning.",
+        stack: "Streamlit, Optimization, ML, Python", 
+        image: "/images/shiftwise.png",
+        demo: "https://shiftwise.streamlit.app/",
+        github: "https://github.com/heritai/shiftwise-scheduling-dashboard",
+        featured: true
+      },
+      { 
+        title: lang === "fr" ? "Gagner du temps et booster les ventes avec du contenu marketing alimenté par l'IA" : "Save time and boost sales with AI-powered marketing content",
+        description: lang === "fr"
+          ? "Créer des descriptions de produits, emails et posts cohérents prend des heures et épuise les équipes marketing."
+          : "Creating consistent product descriptions, emails, and posts takes hours and drains marketing teams.",
+        solution: lang === "fr"
+          ? "La solution est un tableau de bord qui génère instantanément du contenu marketing sur tous les canaux et tons, alimenté par Mistral 7B."
+          : "A dashboard that generates instant marketing content across channels and tones, powered by Mistral 7B.",
+        details: lang === "fr"
+          ? "BrandBoost a réduit le temps de préparation des campagnes et produit du contenu engageant et cohérent à grande échelle en anglais et français."
+          : "BrandBoost reduced campaign preparation time and produced engaging, consistent content at scale in both English and French.",
+        stack: "Hugging Face, Mistral 7B, Streamlit, Python", 
+        image: "/images/brandboost.png",
+        demo: "https://huggingface.co/spaces/youtah/brandboost-content-generator",
+        github: "https://github.com/heritai/brandboost-content-generator",
+        featured: true
+      },
     ],
   },
   about: {
@@ -218,6 +286,7 @@ const t = (lang: Lang) => ({
 export default function Home() {
   const [lang, setLang] = useState<Lang>("fr");
   const [theme, setTheme] = useState<Theme>("dark");
+  const [formSubmitted, setFormSubmitted] = useState(false);
   const i = useMemo(() => t(lang), [lang]);
 
   useEffect(() => {
@@ -485,14 +554,64 @@ export default function Home() {
         <div className="mx-auto max-w-7xl px-6">
           <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5 }} className="text-3xl md:text-4xl font-bold mb-10">{i.contact.title}</motion.h2>
           <p className="text-foreground/80 max-w-2xl">{i.contact.text}</p>
-          <form className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-4" action={`mailto:ytaheris@gmail.com`} method="post" encType="text/plain">
-            <input name="name" placeholder={i.contact.name} className="glass-card rounded-2xl px-4 py-3 bg-card/60 border border-foreground/10 focus:outline-none focus:border-electric" />
-            <input name="email" placeholder={i.contact.email} className="glass-card rounded-2xl px-4 py-3 bg-card/60 border border-foreground/10 focus:outline-none focus:border-electric" />
-            <textarea name="message" placeholder={i.contact.message} className="glass-card rounded-2xl px-4 py-3 bg-card/60 border border-foreground/10 focus:outline-none focus:border-electric md:col-span-2 h-36" />
+          <form 
+            className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-4" 
+            onSubmit={async (e) => {
+              e.preventDefault();
+              const formData = new FormData(e.currentTarget);
+              
+              // Check honeypot field for bots
+              if (formData.get('_gotcha')) {
+                console.log('Bot detected, ignoring submission');
+                return;
+              }
+              
+              try {
+                const response = await fetch('https://formspree.io/f/meoreqdv', {
+                  method: 'POST',
+                  body: formData,
+                  headers: {
+                    'Accept': 'application/json'
+                  }
+                });
+                
+                if (response.ok) {
+                  setFormSubmitted(true);
+                  // Reset form
+                  (e.target as HTMLFormElement).reset();
+                } else {
+                  console.error('Form submission failed');
+                }
+              } catch (error) {
+                console.error('Error:', error);
+              }
+            }}
+          >
+            <input type="hidden" name="_subject" value="New contact from HerixAI website" />
+            {/* Honeypot field - hidden from users, catches bots */}
+            <input type="text" name="_gotcha" style={{ display: 'none' }} tabIndex={-1} autoComplete="off" />
+            <input name="name" placeholder={i.contact.name} required className="glass-card rounded-2xl px-4 py-3 bg-card/60 border border-foreground/10 focus:outline-none focus:border-electric" />
+            <input name="email" type="email" placeholder={i.contact.email} required className="glass-card rounded-2xl px-4 py-3 bg-card/60 border border-foreground/10 focus:outline-none focus:border-electric" />
+            <textarea name="message" placeholder={i.contact.message} required className="glass-card rounded-2xl px-4 py-3 bg-card/60 border border-foreground/10 focus:outline-none focus:border-electric md:col-span-2 h-36" />
             <div className="md:col-span-2">
               <button type="submit" className="px-6 py-3 rounded-2xl bg-electric text-black font-semibold glow-electric hover:scale-[1.02] transition">{i.contact.send}</button>
             </div>
           </form>
+          {formSubmitted ? (
+            <div className="mt-4 p-4 bg-green-500/10 border border-green-500/20 rounded-2xl text-green-400">
+              {lang === "fr" 
+                ? "✅ Message envoyé avec succès ! Merci pour votre intérêt." 
+                : "✅ Message sent successfully! Thank you for your interest."
+              }
+            </div>
+          ) : (
+            <div className="mt-4 text-sm text-foreground/60">
+              {lang === "fr" 
+                ? "Votre message sera envoyé directement à ytaheris@gmail.com" 
+                : "Your message will be sent directly to ytaheris@gmail.com"
+              }
+            </div>
+          )}
           <div className="flex items-center gap-4 mt-8">
             <a className="glass-card p-3 rounded-2xl hover:glow-electric" href="https://www.linkedin.com/in/yousef-taheri" target="_blank" rel="noreferrer noopener" aria-label="LinkedIn"><FaLinkedin /></a>
             <a className="glass-card p-3 rounded-2xl hover:glow-electric" href="https://github.com/heritai" target="_blank" rel="noreferrer noopener" aria-label="GitHub"><FaGithub /></a>
