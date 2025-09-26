@@ -150,6 +150,23 @@ const t = (lang: Lang) => ({
         github: "https://github.com/heritai/insightbank-churn-dashboard",
         featured: true
       },
+      { 
+        title: lang === "fr" ? "Maximiser les revenus avec un tarification dynamique alimentée par l'IA" : "Maximize revenue with AI-driven dynamic pricing",
+        description: lang === "fr"
+          ? "Beaucoup d'hôtels perdent de l'argent avec des prix statiques : chambres vides en basse saison, ou vendues trop bon marché en haute saison."
+          : "Many hotels lose money with static prices: empty rooms in low season, or sold too cheaply in peak season.",
+        solution: lang === "fr"
+          ? "La solution est un moteur de tarification dynamique qui prédit la demande et recommande des prix optimaux."
+          : "A dynamic pricing engine that predicts demand and recommends optimal prices.",
+        details: lang === "fr"
+          ? "Roomify a augmenté l'occupation et les revenus en ajustant les prix intelligemment selon la demande."
+          : "Roomify increased occupancy and revenue by adjusting prices intelligently based on demand.",
+        stack: "Streamlit, Time Series, ML, Python", 
+        image: "/images/roomify.png",
+        demo: "https://roomify-pricing.streamlit.app/",
+        github: "https://github.com/heritai/roomify-pricing-dashboard",
+        featured: true
+      },
     ],
   },
   about: {
