@@ -492,7 +492,17 @@ export default function Home() {
             <motion.div initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.5 }} className="rounded-2xl overflow-hidden">
               <Image src="/images/yousef.png" alt="Yousef Taheri" width={800} height={1000} className="h-72 md:h-96 w-full object-cover" />
             </motion.div>
-            <motion.p initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.5 }} className="text-foreground/80 text-lg leading-relaxed">{i.about.text}</motion.p>
+            <motion.div initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.5 }} className="space-y-4">
+              <p className="text-foreground/80 text-lg leading-relaxed">{i.about.text}</p>
+              <div className="flex items-center gap-4">
+                <a className="glass-card p-3 rounded-2xl hover:glow-electric" href="https://www.linkedin.com/in/yousef-taheri" target="_blank" rel="noreferrer noopener" aria-label="Yousef Taheri LinkedIn">
+                  <FaLinkedin className="text-electric" />
+                </a>
+                <span className="text-foreground/60 text-sm">
+                  {lang === "fr" ? "Connectez-vous avec Yousef sur LinkedIn" : "Connect with Yousef on LinkedIn"}
+                </span>
+              </div>
+            </motion.div>
           </div>
         </div>
       </section>
@@ -613,7 +623,7 @@ export default function Home() {
             </div>
           )}
           <div className="flex items-center gap-4 mt-8">
-            <a className="glass-card p-3 rounded-2xl hover:glow-electric" href="https://www.linkedin.com/in/yousef-taheri" target="_blank" rel="noreferrer noopener" aria-label="LinkedIn"><FaLinkedin /></a>
+            <a className="glass-card p-3 rounded-2xl hover:glow-electric" href="https://www.linkedin.com/company/herixai/" target="_blank" rel="noreferrer noopener" aria-label="HerixAI LinkedIn"><FaLinkedin /></a>
             <a className="glass-card p-3 rounded-2xl hover:glow-electric" href="https://github.com/heritai" target="_blank" rel="noreferrer noopener" aria-label="GitHub"><FaGithub /></a>
             <a className="glass-card p-3 rounded-2xl hover:glow-electric" href="https://herixai.com" target="_blank" rel="noreferrer noopener" aria-label="Website"><FaGlobe /></a>
           </div>
