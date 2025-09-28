@@ -607,8 +607,8 @@ export default function Home() {
           ) : (
             <div className="mt-4 text-sm text-foreground/60">
               {lang === "fr" 
-                ? "Votre message sera envoyé directement à ytaheris@gmail.com" 
-                : "Your message will be sent directly to ytaheris@gmail.com"
+                ? "Votre message sera envoyé directement à contact@herixai.com" 
+                : "Your message will be sent directly to contact@herixai.com"
               }
             </div>
           )}
