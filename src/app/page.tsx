@@ -5,10 +5,22 @@ import { useState, useMemo, useEffect } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { FaGithub, FaLinkedin, FaGlobe } from "react-icons/fa6";
-import { FaArrowDown, FaBrain, FaChartLine, FaRobot, FaCloud, FaShieldAlt, FaChalkboardTeacher, FaGraduationCap, FaFileAlt, FaUserGraduate } from "react-icons/fa";
+import { FaArrowDown, FaBrain, FaChartLine, FaRobot, FaCloud, FaShieldAlt, FaChalkboardTeacher, FaGraduationCap, FaFileAlt, FaUserGraduate, FaTimes, FaExternalLinkAlt } from "react-icons/fa";
 
 type Lang = "fr" | "en";
 type Theme = "dark" | "light";
+
+type Project = {
+  title: string;
+  description: string;
+  solution: string;
+  details: string;
+  stack: string;
+  image: string;
+  demo: string;
+  github: string;
+  featured: boolean;
+};
 
 const t = (lang: Lang) => ({
   nav: {
@@ -235,6 +247,40 @@ const t = (lang: Lang) => ({
         github: "https://github.com/heritai/brandboost-content-generator",
         featured: true
       },
+      { 
+        title: lang === "fr" ? "Assurer la conformité et réduire les risques avec l'audit IA automatisé" : "Ensure compliance and reduce risks with automated AI auditing",
+        description: lang === "fr"
+          ? "Les entreprises peinent à auditer leurs systèmes IA pour la conformité RGPD et l'AI Act, exposant à des risques réglementaires et financiers."
+          : "Companies struggle to audit their AI systems for GDPR and AI Act compliance, exposing them to regulatory and financial risks.",
+        solution: lang === "fr"
+          ? "La solution est un outil d'audit automatisé sur AWS qui évalue la conformité, détecte les biais et génère des rapports de conformité."
+          : "An automated AWS-based audit tool that evaluates compliance, detects biases, and generates compliance reports.",
+        details: lang === "fr"
+          ? "L'outil d'audit a identifié des problèmes de conformité critiques, réduit les risques réglementaires et automatisé les processus d'audit IA complexes."
+          : "The audit tool identified critical compliance issues, reduced regulatory risks, and automated complex AI auditing processes.",
+        stack: "AWS, SageMaker, Python, Compliance", 
+        image: "/images/audit-tool.png",
+        demo: "https://ml-audit.streamlit.app/",
+        github: "https://github.com/heritai/ml-cloud-audit",
+        featured: true
+      },
+      { 
+        title: lang === "fr" ? "Accélérer la conformité avec des assistants IA multi-agents intelligents" : "Accelerate compliance with intelligent multi-agent AI assistants",
+        description: lang === "fr"
+          ? "Les équipes juridiques et de conformité sont submergées par la complexité des réglementations IA et ont besoin d'assistance intelligente."
+          : "Legal and compliance teams are overwhelmed by AI regulation complexity and need intelligent assistance.",
+        solution: lang === "fr"
+          ? "La solution est un système multi-agents basé sur LLM qui guide les équipes à travers les processus de conformité avec des réponses contextuelles."
+          : "A multi-agent LLM-based system that guides teams through compliance processes with contextual responses.",
+        details: lang === "fr"
+          ? "L'assistant multi-agents a accéléré les processus de conformité, réduit les erreurs et fourni des conseils personnalisés pour chaque cas d'usage."
+          : "The multi-agent assistant accelerated compliance processes, reduced errors, and provided personalized guidance for each use case.",
+        stack: "LLM, Multi-Agent, Python, Compliance", 
+        image: "/images/multi-agent.png",
+        demo: "https://compliance-assistant.streamlit.app/",
+        github: "https://github.com/heritai/llm-multi-agent-assistant",
+        featured: true
+      },
     ],
   },
   about: {
@@ -287,6 +333,8 @@ export default function Home() {
   const [lang, setLang] = useState<Lang>("fr");
   const [theme, setTheme] = useState<Theme>("dark");
   const [formSubmitted, setFormSubmitted] = useState(false);
+  const [showAllProjects, setShowAllProjects] = useState(false);
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const i = useMemo(() => t(lang), [lang]);
 
   useEffect(() => {
@@ -296,6 +344,27 @@ export default function Home() {
     if (storedLang) setLang(storedLang);
     if (storedTheme) setTheme(storedTheme);
   }, []);
+
+  // Handle ESC key to close modal
+  useEffect(() => {
+    const handleEsc = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setSelectedProject(null);
+      }
+    };
+    
+    if (selectedProject) {
+      document.addEventListener('keydown', handleEsc);
+      document.body.style.overflow = 'hidden'; // Prevent background scrolling
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    
+    return () => {
+      document.removeEventListener('keydown', handleEsc);
+      document.body.style.overflow = 'unset';
+    };
+  }, [selectedProject]);
 
   useEffect(() => {
     if (typeof document !== "undefined") {
@@ -316,7 +385,7 @@ export default function Home() {
       <header className="sticky top-0 z-20 backdrop-blur supports-[backdrop-filter]:bg-black/40 border-b border-foreground/10">
         <div className="mx-auto max-w-7xl px-6 py-4 flex items-center justify-between">
           <a href="#home" className="flex items-center gap-2">
-            <span className="text-2xl font-semibold neon-text">HerixAI</span>
+            <span className="text-2xl font-medium neon-text">HerixAI</span>
           </a>
           <nav className="hidden md:flex items-center gap-8 text-sm">
             <a href="#home" className="hover:text-electric">{i.nav.home}</a>
@@ -352,12 +421,12 @@ export default function Home() {
       <section id="home" className="section relative">
         <div className="mx-auto max-w-7xl px-6 pt-20 pb-28">
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }} className="text-center">
-            <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight">
+            <h1 className="text-5xl md:text-7xl font-medium tracking-tight">
               <span className="neon-text">HerixAI</span>
             </h1>
             <p className="mt-6 text-lg md:text-2xl text-foreground/80 max-w-3xl mx-auto">{i.hero.subtitle}</p>
             <div className="flex items-center justify-center gap-4 mt-10">
-              <a href="#services" className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl bg-electric text-black font-semibold glow-electric hover:scale-[1.02] transition">
+              <a href="#services" className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl bg-electric text-black font-medium glow-electric hover:scale-[1.02] transition">
                 {i.hero.cta} <FaArrowDown />
               </a>
               <a
@@ -376,7 +445,7 @@ export default function Home() {
       {/* Value Highlight #1 */}
       <section className="section py-12">
         <div className="mx-auto max-w-5xl px-6 text-center">
-          <h3 className="text-2xl md:text-4xl font-extrabold tracking-tight neon-text">
+          <h3 className="text-2xl md:text-4xl font-medium tracking-tight neon-text">
             {lang === "fr"
               ? "HerixAI transforme des données complexes en solutions intelligentes qui créent de la valeur mesurable."
               : "HerixAI transforms complex data into intelligent solutions that create measurable business value."}
@@ -386,15 +455,15 @@ export default function Home() {
 
       <section id="services" className="section py-24">
         <div className="mx-auto max-w-7xl px-6">
-          <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5 }} className="text-3xl md:text-4xl font-bold mb-10">{i.services.title}</motion.h2>
+          <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5 }} className="text-3xl md:text-4xl font-medium mb-10">{i.services.title}</motion.h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {i.services.items.map((s, idx) => (
               <motion.div key={idx} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.4, delay: idx * 0.05 }} className="glass-card p-6 rounded-2xl border border-foreground/10 hover:border-electric/40 hover:glow-electric transition">
                 <div className="flex items-center gap-3 mb-4">
                   {s.icon}
-                  <div className="text-electric text-xl font-semibold">{s.title}</div>
+                  <div className="text-electric text-xl font-medium">{s.title}</div>
                 </div>
-                <div className="text-lg font-bold text-foreground mb-2">{s.headline}</div>
+                <div className="text-lg font-medium text-foreground mb-2">{s.headline}</div>
                 <div className="text-foreground/70 mb-4">{s.subtitle}</div>
                 <div className="text-foreground/80 leading-relaxed whitespace-pre-line">{s.desc}</div>
               </motion.div>
@@ -406,7 +475,7 @@ export default function Home() {
       {/* Value Highlight #2 */}
       <section className="section py-12">
         <div className="mx-auto max-w-5xl px-6 text-center">
-          <h3 className="text-2xl md:text-4xl font-extrabold tracking-tight neon-text">
+          <h3 className="text-2xl md:text-4xl font-medium tracking-tight neon-text">
             {lang === "fr"
               ? "De la recherche au déploiement : des systèmes d’IA scalables qui améliorent l’efficacité, réduisent les coûts et stimulent l’innovation."
               : "From research to deployment: scalable AI systems that improve efficiency, reduce costs, and drive innovation."}
@@ -416,68 +485,163 @@ export default function Home() {
 
       <section id="projects" className="section py-24">
         <div className="mx-auto max-w-7xl px-6">
-          <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5 }} className="text-3xl md:text-4xl font-bold mb-10">{i.projects.title}</motion.h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {i.projects.items.map((p, idx) => (
+          <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5 }} className="text-3xl md:text-4xl font-medium mb-10">{i.projects.title}</motion.h2>
+          
+          <motion.div 
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
+            layout
+          >
+            {(showAllProjects ? i.projects.items : i.projects.items.slice(0, 8)).map((p, idx) => (
               <motion.div
                 key={p.github.split('/').pop()}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: idx * 0.05 }}
-                className="group glass-card p-6 rounded-2xl border border-foreground/10 hover:border-electric/40 hover:glow-electric transition block flex flex-col h-full"
+                onClick={() => setSelectedProject(p)}
+                className="group glass-card p-4 rounded-2xl border border-foreground/10 hover:border-electric/40 hover:glow-electric transition-all duration-300 cursor-pointer"
+                layout
               >
+                <Image src={p.image} alt={p.title} width={1200} height={800} className="h-32 w-full rounded-xl object-cover mb-3" />
                 
-                <Image src={p.image} alt={p.title} width={1200} height={800} className="h-36 w-full rounded-xl object-cover mb-4" />
+                <div className="text-lg font-medium mb-2 text-foreground line-clamp-2">{p.title}</div>
                 
-                <div className="text-2xl font-bold mb-3 text-foreground">{p.title}</div>
+                <div className="text-foreground/60 text-xs mb-3">{p.stack}</div>
                 
-                {p.description && (
-                  <div className="text-foreground/80 text-sm mb-3 font-medium">{p.description}</div>
-                )}
-                
-                {p.solution && (
-                  <div className="text-electric text-sm mb-3 font-semibold bg-gradient-to-r from-electric/5 to-transparent py-2 px-3 rounded">
-                    {p.solution}
-                  </div>
-                )}
-                
-                {p.details && (
-                  <div className="text-foreground/70 text-sm mb-4 leading-relaxed flex-grow">{p.details}</div>
-                )}
-                
-                <div className="text-foreground/70 text-sm mb-4">{p.stack}</div>
-                
-                <div className="flex gap-3 mt-auto">
-                  {p.demo && (
-                    <a 
-                      href={p.demo} 
-                      target="_blank" 
-                      rel="noreferrer noopener"
-                      className="flex-1 bg-electric text-black font-semibold px-4 py-2 rounded-xl text-center text-sm hover:bg-electric/90 transition"
-                    >
-                      {lang === "fr" ? "Voir la démo" : "View Demo"}
-                    </a>
-                  )}
-                  <a 
-                    href={p.github} 
-                    target="_blank" 
-                    rel="noreferrer noopener"
-                    className={`${p.demo ? 'flex-1' : 'w-full'} border border-electric text-electric font-semibold px-4 py-2 rounded-xl text-center text-sm hover:bg-electric hover:text-black transition`}
-                  >
-                    {lang === "fr" ? "GitHub" : "GitHub"}
-                  </a>
+                <div className="flex items-center justify-between">
+                  <span className="text-electric text-sm font-medium">
+                    {lang === "fr" ? "En savoir plus" : "Learn More"}
+                  </span>
+                  <FaExternalLinkAlt className="text-electric text-xs" />
                 </div>
               </motion.div>
             ))}
-          </div>
+          </motion.div>
+          
+          {i.projects.items.length > 8 && (
+            <motion.div 
+              className="flex justify-center mt-12"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.3 }}
+            >
+              <button
+                onClick={() => setShowAllProjects(!showAllProjects)}
+                className="glass-card px-8 py-4 rounded-2xl border border-electric/40 hover:border-electric hover:glow-electric transition-all duration-300 group"
+              >
+                <div className="flex items-center gap-3">
+                  <span className="text-electric font-medium text-lg">
+                    {showAllProjects 
+                      ? (lang === "fr" ? "Voir moins" : "Show Less")
+                      : (lang === "fr" ? "Voir plus de projets" : "Show More Projects")
+                    }
+                  </span>
+                  <motion.div
+                    animate={{ rotate: showAllProjects ? 180 : 0 }}
+                    transition={{ duration: 0.3 }}
+                    className="text-electric"
+                  >
+                    <FaArrowDown />
+                  </motion.div>
+                </div>
+              </button>
+            </motion.div>
+          )}
         </div>
       </section>
+
+      {/* Project Modal */}
+      {selectedProject && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 z-50 flex items-center justify-center p-4"
+          onClick={() => setSelectedProject(null)}
+        >
+          {/* Backdrop */}
+          <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" />
+          
+          {/* Modal Content */}
+          <motion.div
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0.9, opacity: 0 }}
+            transition={{ type: "spring", duration: 0.5 }}
+            className="relative bg-background max-w-4xl w-full max-h-[90vh] overflow-y-auto rounded-3xl border border-electric/20 shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Close Button */}
+            <button
+              onClick={() => setSelectedProject(null)}
+              className="absolute top-4 right-4 z-10 bg-background/80 backdrop-blur-sm p-2 rounded-full border border-foreground/20 hover:border-electric/40 hover:glow-electric transition-all duration-300"
+            >
+              <FaTimes className="text-foreground/60 hover:text-electric transition-colors" />
+            </button>
+            
+            {/* Modal Header */}
+            <div className="p-8 pb-4">
+              <Image 
+                src={selectedProject.image} 
+                alt={selectedProject.title} 
+                width={1200} 
+                height={800} 
+                className="h-80 w-full rounded-2xl object-cover mb-6" 
+              />
+              
+              <h3 className="text-3xl font-medium mb-4 text-foreground">{selectedProject.title}</h3>
+              
+              {selectedProject.description && (
+                <div className="text-foreground/80 text-lg mb-4 font-medium">{selectedProject.description}</div>
+              )}
+              
+              {selectedProject.solution && (
+                <div className="text-electric text-lg mb-4 font-medium bg-gradient-to-r from-electric/10 to-transparent py-3 px-4 rounded-xl">
+                  {selectedProject.solution}
+                </div>
+              )}
+              
+              {selectedProject.details && (
+                <div className="text-foreground/70 text-base mb-6 leading-relaxed">{selectedProject.details}</div>
+              )}
+              
+              <div className="text-foreground/60 text-sm mb-6 font-medium">{selectedProject.stack}</div>
+            </div>
+            
+            {/* Modal Footer */}
+            <div className="p-8 pt-4 border-t border-foreground/10">
+              <div className="flex gap-4">
+                {selectedProject.demo && (
+                  <a 
+                    href={selectedProject.demo} 
+                    target="_blank" 
+                    rel="noreferrer noopener"
+                    className="flex-1 bg-electric text-black font-medium px-6 py-3 rounded-xl text-center hover:bg-electric/90 transition flex items-center justify-center gap-2"
+                  >
+                    <FaExternalLinkAlt />
+                    {lang === "fr" ? "Voir la démo" : "View Demo"}
+                  </a>
+                )}
+                <a 
+                  href={selectedProject.github} 
+                  target="_blank" 
+                  rel="noreferrer noopener"
+                  className={`${selectedProject.demo ? 'flex-1' : 'w-full'} border border-electric text-electric font-medium px-6 py-3 rounded-xl text-center hover:bg-electric hover:text-black transition flex items-center justify-center gap-2`}
+                >
+                  <FaGithub />
+                  {lang === "fr" ? "Voir sur GitHub" : "View on GitHub"}
+                </a>
+              </div>
+            </div>
+          </motion.div>
+        </motion.div>
+      )}
 
       {/* Value Highlight #3 */}
       <section className="section py-12">
         <div className="mx-auto max-w-5xl px-6 text-center">
-          <h3 className="text-2xl md:text-4xl font-extrabold tracking-tight neon-text">
+          <h3 className="text-2xl md:text-4xl font-medium tracking-tight neon-text">
             {lang === "fr"
               ? "Allier machine learning avancé, IA générative et expertise conformité pour une adoption de l’IA digne de confiance."
               : "Bringing together advanced machine learning, generative AI, and compliance expertise for trustworthy AI adoption."}
@@ -487,7 +651,7 @@ export default function Home() {
 
       <section id="about" className="section py-24">
         <div className="mx-auto max-w-7xl px-6">
-          <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5 }} className="text-3xl md:text-4xl font-bold mb-10">{i.about.title}</motion.h2>
+          <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5 }} className="text-3xl md:text-4xl font-medium mb-10">{i.about.title}</motion.h2>
           <div className="grid md:grid-cols-2 gap-8 items-start">
             <motion.div initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.5 }} className="rounded-2xl overflow-hidden">
               <Image src="/images/yousef.png" alt="Yousef Taheri" width={800} height={1000} className="h-72 md:h-96 w-full object-cover" />
@@ -510,7 +674,7 @@ export default function Home() {
       {/* Value Highlight #4 */}
       <section className="section py-12">
         <div className="mx-auto max-w-5xl px-6 text-center">
-          <h3 className="text-2xl md:text-4xl font-extrabold tracking-tight neon-text">
+          <h3 className="text-2xl md:text-4xl font-medium tracking-tight neon-text">
             {lang === "fr"
               ? "HerixAI veille à ce que votre IA soit non seulement puissante — mais aussi transparente, équitable et conforme aux réglementations internationales."
               : "HerixAI ensures your AI is not only powerful — but also transparent, fair, and compliant with global regulations."}
@@ -521,7 +685,7 @@ export default function Home() {
       {/* Publications & Insights */}
       <section id="publications" className="section py-24">
         <div className="mx-auto max-w-7xl px-6">
-          <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5 }} className="text-3xl md:text-4xl font-bold mb-10">{i.publications.title}</motion.h2>
+          <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5 }} className="text-3xl md:text-4xl font-medium mb-10">{i.publications.title}</motion.h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {i.publications.items.map((p, idx) => (
               <motion.a
@@ -537,7 +701,7 @@ export default function Home() {
               >
                 <div className="flex items-center gap-3 mb-4">
                   {p.icon}
-                  <div className="text-electric text-xl font-semibold">{p.title}</div>
+                  <div className="text-electric text-xl font-medium">{p.title}</div>
                 </div>
                 <div className="text-foreground/80 leading-relaxed">{p.description}</div>
                 <div className="mt-4 text-electric text-sm group-hover:text-electric/80 transition">
@@ -552,7 +716,7 @@ export default function Home() {
       {/* Value Highlight #5 */}
       <section className="section py-12">
         <div className="mx-auto max-w-5xl px-6 text-center">
-          <h3 className="text-2xl md:text-4xl font-extrabold tracking-tight neon-text">
+          <h3 className="text-2xl md:text-4xl font-medium tracking-tight neon-text">
             {lang === "fr"
               ? "Aider les entreprises à accélérer leur croissance avec des solutions d'IA pratiques, fiables et pérennes."
               : "Helping companies accelerate growth with AI solutions that are practical, reliable, and future-proof."}
@@ -562,7 +726,7 @@ export default function Home() {
 
       <section id="contact" className="section py-24">
         <div className="mx-auto max-w-7xl px-6">
-          <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5 }} className="text-3xl md:text-4xl font-bold mb-10">{i.contact.title}</motion.h2>
+          <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5 }} className="text-3xl md:text-4xl font-medium mb-10">{i.contact.title}</motion.h2>
           <p className="text-foreground/80 max-w-2xl">{i.contact.text}</p>
           <form 
             className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-4" 
@@ -604,7 +768,7 @@ export default function Home() {
             <input name="email" type="email" placeholder={i.contact.email} required className="glass-card rounded-2xl px-4 py-3 bg-card/60 border border-foreground/10 focus:outline-none focus:border-electric" />
             <textarea name="message" placeholder={i.contact.message} required className="glass-card rounded-2xl px-4 py-3 bg-card/60 border border-foreground/10 focus:outline-none focus:border-electric md:col-span-2 h-36" />
             <div className="md:col-span-2">
-              <button type="submit" className="px-6 py-3 rounded-2xl bg-electric text-black font-semibold glow-electric hover:scale-[1.02] transition">{i.contact.send}</button>
+              <button type="submit" className="px-6 py-3 rounded-2xl bg-electric text-black font-medium glow-electric hover:scale-[1.02] transition">{i.contact.send}</button>
             </div>
           </form>
           {formSubmitted ? (
