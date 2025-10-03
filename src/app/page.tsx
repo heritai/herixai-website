@@ -17,6 +17,7 @@ type Project = {
   details: string;
   stack: string;
   image: string;
+  gif?: string;
   demo: string;
   github: string;
   featured: boolean;
@@ -124,6 +125,7 @@ const t = (lang: Lang) => ({
           : "NovaMart improved stock availability, reduced inventory costs, and made smarter purchasing decisions with AI-driven forecasts.",
         stack: "Streamlit, Prophet, ARIMA, Python", 
         image: "/images/novamart.png",
+        gif: "/images/novamart.gif",
         demo: "https://novamart.streamlit.app/",
         github: "https://github.com/heritai/novamart-dashboard",
         featured: true
@@ -141,6 +143,7 @@ const t = (lang: Lang) => ({
           : "StyleHive increased average basket size and uncovered new cross-sell opportunities, leading to more revenue per customer.",
         stack: "Streamlit, Association Rules, Collaborative Filtering, Python", 
         image: "/images/stylehive.png",
+        gif: "/images/stylehive.gif",
         demo: "https://stylehive.streamlit.app/",
         github: "https://github.com/heritai/stylehive-dashboard",
         featured: true
@@ -158,6 +161,7 @@ const t = (lang: Lang) => ({
           : "InsightBank reduced churn and improved retention by targeting the right customers with the right actions.",
         stack: "Streamlit, Clustering, ML, Python", 
         image: "/images/insightbank.png",
+        gif: "/images/insightbank.gif",
         demo: "https://insightbank.streamlit.app/",
         github: "https://github.com/heritai/insightbank-churn-dashboard",
         featured: true
@@ -175,6 +179,7 @@ const t = (lang: Lang) => ({
           : "Roomify increased occupancy and revenue by adjusting prices intelligently based on demand.",
         stack: "Streamlit, Time Series, ML, Python", 
         image: "/images/roomify.png",
+        gif: "/images/roomify.gif",
         demo: "https://roomify-pricing.streamlit.app/",
         github: "https://github.com/heritai/roomify-pricing-dashboard",
         featured: true
@@ -192,6 +197,7 @@ const t = (lang: Lang) => ({
           : "TransacGuard helped reduce financial risks, detect fraud earlier, and improve operational reliability with transparent insights for decision-makers.",
         stack: "Streamlit, Anomaly Detection, ML, Python", 
         image: "/images/transacguard.png",
+        gif: "/images/transacguard.gif",
         demo: "https://transacguard.streamlit.app/",
         github: "https://github.com/heritai/transacguard-anomaly-dashboard",
         featured: true
@@ -209,6 +215,7 @@ const t = (lang: Lang) => ({
           : "AdOptima improved ROI and boosted sales by reallocating budgets based on AI-driven insights.",
         stack: "Streamlit, Marketing Analytics, ML, Python", 
         image: "/images/adoptima.png",
+        gif: "/images/adoptima.gif",
         demo: "https://adoptima.streamlit.app/",
         github: "https://github.com/heritai/adoptima-marketing-dashboard",
         featured: true
@@ -226,6 +233,7 @@ const t = (lang: Lang) => ({
           : "ShiftWise reduced labor costs, improved shift coverage, and freed managers from hours of manual planning.",
         stack: "Streamlit, Optimization, ML, Python", 
         image: "/images/shiftwise.png",
+        gif: "/images/ShiftWise.gif",
         demo: "https://shiftwise.streamlit.app/",
         github: "https://github.com/heritai/shiftwise-scheduling-dashboard",
         featured: true
@@ -243,6 +251,7 @@ const t = (lang: Lang) => ({
           : "BrandBoost reduced campaign preparation time and produced engaging, consistent content at scale in both English and French.",
         stack: "Hugging Face, Mistral 7B, Streamlit, Python", 
         image: "/images/brandboost.png",
+        gif: "/images/brandboost.gif",
         demo: "https://huggingface.co/spaces/youtah/brandboost-content-generator",
         github: "https://github.com/heritai/brandboost-content-generator",
         featured: true
@@ -259,7 +268,8 @@ const t = (lang: Lang) => ({
           ? "L'outil d'audit a identifié des problèmes de conformité critiques, réduit les risques réglementaires et automatisé les processus d'audit IA complexes."
           : "The audit tool identified critical compliance issues, reduced regulatory risks, and automated complex AI auditing processes.",
         stack: "AWS, SageMaker, Python, Compliance", 
-        image: "/images/audit-tool.png",
+        image: "/images/audit_tool.png",
+        gif: "/images/audit_tool.gif",
         demo: "https://ml-audit.streamlit.app/",
         github: "https://github.com/heritai/ml-cloud-audit",
         featured: true
@@ -277,6 +287,7 @@ const t = (lang: Lang) => ({
           : "The multi-agent assistant accelerated compliance processes, reduced errors, and provided personalized guidance for each use case.",
         stack: "LLM, Multi-Agent, Python, Compliance", 
         image: "/images/multi-agent.png",
+        gif: "/images/multi-agent.gif",
         demo: "https://compliance-assistant.streamlit.app/",
         github: "https://github.com/heritai/llm-multi-agent-assistant",
         featured: true
@@ -583,11 +594,11 @@ export default function Home() {
             {/* Modal Header */}
             <div className="p-8 pb-4">
               <Image 
-                src={selectedProject.image} 
+                src={selectedProject.gif || selectedProject.image} 
                 alt={selectedProject.title} 
                 width={1200} 
-                height={800} 
-                className="h-80 w-full rounded-2xl object-cover mb-6" 
+                height={600} 
+                className="h-96 w-full rounded-2xl object-contain mb-6 bg-background/5" 
               />
               
               <h3 className="text-3xl font-medium mb-4 text-foreground">{selectedProject.title}</h3>
