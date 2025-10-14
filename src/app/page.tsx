@@ -328,7 +328,7 @@ export default function Home() {
 
       <section id="home" className="section relative">
         <div className="mx-auto max-w-7xl px-6 pt-20 pb-20">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center min-h-[80vh]">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center min-h-[80vh]">
             {/* Left Side - Text Content */}
             <motion.div 
               initial={{ opacity: 0, x: -30 }} 
@@ -386,13 +386,16 @@ export default function Home() {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8, delay: 0.3 }}
-              className="relative h-96 flex items-center justify-center overflow-visible"
+              className="relative w-full flex items-center justify-center"
+              style={{ minHeight: '400px', maxHeight: '500px', aspectRatio: '1/1' }}
             >
               <svg
-                className="w-full h-full max-w-lg"
+                className="w-full h-full"
                 viewBox="0 0 600 600"
+                preserveAspectRatio="xMidYMid meet"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
+                style={{ maxWidth: '500px', maxHeight: '500px' }}
               >
                 <defs>
                   {/* Glow Filters */}
