@@ -553,16 +553,17 @@ export default function Home() {
                   
                   {/* Brain Icon on Agentic AI */}
                   <motion.foreignObject
-                    x="255"
-                    y="255"
-                    width="90"
-                    height="90"
+                    x="250"
+                    y="250"
+                    width="100"
+                    height="100"
                     initial={{ scale: 0, opacity: 0 }}
                     animate={{ scale: 1, opacity: 1 }}
                     transition={{ duration: 0.8, delay: 1.2 }}
+                    style={{ overflow: 'visible' }}
                   >
                     <div className="flex items-center justify-center w-full h-full">
-                      <FaBrain className="text-white text-7xl" style={{ filter: 'drop-shadow(0 0 10px rgba(255,255,255,0.7))' }} />
+                      <FaBrain className="text-white" style={{ fontSize: '70px', filter: 'drop-shadow(0 0 10px rgba(255,255,255,0.7))' }} />
                     </div>
                   </motion.foreignObject>
                 </motion.g>
@@ -650,30 +651,30 @@ export default function Home() {
                   
                   {/* Shield Icon on Responsible AI - Orbits with the planet */}
                   <motion.foreignObject
-                    width="50"
-                    height="50"
+                    width="60"
+                    height="60"
                     animate={{
                       x: [
-                        300 + 210 * Math.cos(0) - 25,
-                        300 + 210 * Math.cos(Math.PI / 4) - 25,
-                        300 + 210 * Math.cos(Math.PI / 2) - 25,
-                        300 + 210 * Math.cos(3 * Math.PI / 4) - 25,
-                        300 + 210 * Math.cos(Math.PI) - 25,
-                        300 + 210 * Math.cos(5 * Math.PI / 4) - 25,
-                        300 + 210 * Math.cos(3 * Math.PI / 2) - 25,
-                        300 + 210 * Math.cos(7 * Math.PI / 4) - 25,
-                        300 + 210 * Math.cos(2 * Math.PI) - 25
+                        300 + 210 * Math.cos(0) - 30,
+                        300 + 210 * Math.cos(Math.PI / 4) - 30,
+                        300 + 210 * Math.cos(Math.PI / 2) - 30,
+                        300 + 210 * Math.cos(3 * Math.PI / 4) - 30,
+                        300 + 210 * Math.cos(Math.PI) - 30,
+                        300 + 210 * Math.cos(5 * Math.PI / 4) - 30,
+                        300 + 210 * Math.cos(3 * Math.PI / 2) - 30,
+                        300 + 210 * Math.cos(7 * Math.PI / 4) - 30,
+                        300 + 210 * Math.cos(2 * Math.PI) - 30
                       ],
                       y: [
-                        300 + 210 * Math.sin(0) - 25,
-                        300 + 210 * Math.sin(Math.PI / 4) - 25,
-                        300 + 210 * Math.sin(Math.PI / 2) - 25,
-                        300 + 210 * Math.sin(3 * Math.PI / 4) - 25,
-                        300 + 210 * Math.sin(Math.PI) - 25,
-                        300 + 210 * Math.sin(5 * Math.PI / 4) - 25,
-                        300 + 210 * Math.sin(3 * Math.PI / 2) - 25,
-                        300 + 210 * Math.sin(7 * Math.PI / 4) - 25,
-                        300 + 210 * Math.sin(2 * Math.PI) - 25
+                        300 + 210 * Math.sin(0) - 30,
+                        300 + 210 * Math.sin(Math.PI / 4) - 30,
+                        300 + 210 * Math.sin(Math.PI / 2) - 30,
+                        300 + 210 * Math.sin(3 * Math.PI / 4) - 30,
+                        300 + 210 * Math.sin(Math.PI) - 30,
+                        300 + 210 * Math.sin(5 * Math.PI / 4) - 30,
+                        300 + 210 * Math.sin(3 * Math.PI / 2) - 30,
+                        300 + 210 * Math.sin(7 * Math.PI / 4) - 30,
+                        300 + 210 * Math.sin(2 * Math.PI) - 30
                       ]
                     }}
                     transition={{
@@ -681,9 +682,10 @@ export default function Home() {
                       repeat: Infinity,
                       ease: "linear"
                     }}
+                    style={{ overflow: 'visible' }}
                   >
                     <div className="flex items-center justify-center w-full h-full">
-                      <FaShieldAlt className="text-white text-5xl" style={{ filter: 'drop-shadow(0 0 8px rgba(255,255,255,0.6))' }} />
+                      <FaShieldAlt className="text-white" style={{ fontSize: '48px', filter: 'drop-shadow(0 0 8px rgba(255,255,255,0.6))' }} />
                     </div>
                   </motion.foreignObject>
                 </motion.g>
