@@ -1,0 +1,44 @@
+<svg width="60" height="60" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- 3D HX Icon Only - with Depth and Intelligence Layers -->
+  <defs>
+    <linearGradient id="depth1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#00F0FF;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#B026FF;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="depth2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#B026FF;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#7B2CBF;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="depth3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#00F0FF;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#B026FF;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Layer 3 (back) - slightly offset and darker -->
+  <rect x="15" y="17" width="4" height="28" fill="#7B2CBF" opacity="0.5" rx="2"/>
+  <rect x="30" y="17" width="4" height="28" fill="#7B2CBF" opacity="0.5" rx="2"/>
+  <rect x="19" y="28" width="11" height="4" fill="#7B2CBF" opacity="0.5" rx="2"/>
+  
+  <!-- Layer 2 (middle) -->
+  <rect x="13" y="15" width="4" height="28" fill="url(#depth2)" rx="2"/>
+  <rect x="28" y="15" width="4" height="28" fill="url(#depth2)" rx="2"/>
+  <rect x="17" y="27" width="11" height="4" fill="url(#depth2)" rx="2"/>
+  
+  <!-- Layer 1 (front) - H -->
+  <rect x="10" y="12" width="4" height="28" fill="url(#depth1)" rx="2"/>
+  <rect x="25" y="12" width="4" height="28" fill="url(#depth1)" rx="2"/>
+  <rect x="14" y="25" width="11" height="4" fill="#00F0FF" rx="2"/>
+  
+  <!-- X with layers -->
+  <!-- Back layer -->
+  <line x1="40" y1="17" x2="56" y2="43" stroke="#7B2CBF" stroke-width="4" stroke-linecap="round" opacity="0.5"/>
+  <line x1="56" y1="17" x2="40" y2="43" stroke="#7B2CBF" stroke-width="4" stroke-linecap="round" opacity="0.5"/>
+  <!-- Middle layer -->
+  <line x1="38" y1="15" x2="54" y2="41" stroke="url(#depth3)" stroke-width="4" stroke-linecap="round" opacity="0.6"/>
+  <line x1="54" y1="15" x2="38" y2="41" stroke="url(#depth3)" stroke-width="4" stroke-linecap="round" opacity="0.6"/>
+  <!-- Front layer -->
+  <line x1="36" y1="12" x2="52" y2="38" stroke="url(#depth3)" stroke-width="4" stroke-linecap="round"/>
+  <line x1="52" y1="12" x2="36" y2="38" stroke="url(#depth3)" stroke-width="4" stroke-linecap="round"/>
+</svg>
+

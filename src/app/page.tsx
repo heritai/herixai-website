@@ -2,32 +2,19 @@
 // Test deployment - GitHub Actions CI/CD
 
 import { useState, useMemo, useEffect } from "react";
-import Image from "next/image";
+import Link from "next/link";
 import { motion } from "framer-motion";
 import { FaGithub, FaLinkedin, FaGlobe } from "react-icons/fa6";
-import { FaArrowDown, FaBrain, FaChartLine, FaRobot, FaCloud, FaShieldAlt, FaChalkboardTeacher, FaGraduationCap, FaFileAlt, FaUserGraduate, FaTimes, FaExternalLinkAlt } from "react-icons/fa";
+import { FaArrowDown, FaChartLine, FaRobot, FaShieldAlt, FaFileAlt, FaBrain } from "react-icons/fa";
 
 type Lang = "fr" | "en";
-type Theme = "dark" | "light";
-
-type Project = {
-  title: string;
-  description: string;
-  solution: string;
-  details: string;
-  stack: string;
-  image: string;
-  gif?: string;
-  demo: string;
-  github: string;
-  featured: boolean;
-};
 
 const t = (lang: Lang) => ({
   nav: {
     home: lang === "fr" ? "Accueil" : "Home",
-    services: lang === "fr" ? "Services" : "Services",
-    projects: lang === "fr" ? "Projets" : "Projects",
+    expertise: lang === "fr" ? "Expertise" : "Expertise",
+    collaboration: lang === "fr" ? "Collaboration" : "Collaboration",
+    insights: lang === "fr" ? "Insights" : "Insights",
     about: lang === "fr" ? "À propos" : "About",
     contact: lang === "fr" ? "Contact" : "Contact",
   },
@@ -35,301 +22,145 @@ const t = (lang: Lang) => ({
     title: "HerixAI",
     subtitle:
       lang === "fr"
-        ? "Solutions d’Intelligence Artificielle & Machine Learning — efficaces, évolutives et responsables."
-        : "Artificial Intelligence & Machine Learning Solutions — efficient, scalable, and responsible.",
-    cta: lang === "fr" ? "Découvrir nos services" : "Explore our services",
+        ? "HerixAI conçoit des systèmes intelligents autonomes et responsables. Une intelligence qui raisonne, crée et s'aligne avec les valeurs humaines."
+        : "HerixAI designs autonomous and responsible intelligent systems. Intelligence that reasons, creates, and aligns with human values.",
+    cta: lang === "fr" ? "Découvrir l'expertise" : "Explore the expertise",
     demo: lang === "fr" ? "Réserver une démo" : "Book a Demo",
   },
-  services: {
-    title: lang === "fr" ? "Services" : "Services",
-    value:
-      lang === "fr"
-        ? "Chaque projet vise à créer une valeur mesurable — gain d’efficacité, réduction des coûts, conformité réglementaire et adoption responsable de l’IA."
-        : "Each project is designed to create measurable value — improved efficiency, cost reduction, regulatory compliance, and responsible AI adoption.",
+  expertise: {
+    title: lang === "fr" ? "Expertise" : "Expertise",
+    subtitle: lang === "fr"
+      ? "Transformer les défis complexes en opportunités avec l'IA"
+      : "Transforming complex challenges into opportunities with AI",
+    description: lang === "fr"
+      ? "HerixAI combine expertise technique de pointe et vision stratégique pour créer des solutions d'IA qui génèrent de la valeur mesurable, tout en respectant les plus hauts standards éthiques et réglementaires."
+      : "HerixAI combines cutting-edge technical expertise with strategic vision to create AI solutions that deliver measurable value while meeting the highest ethical and regulatory standards.",
+    learnMore: lang === "fr" ? "En savoir plus" : "Learn More",
     items: [
       {
-        icon: <FaBrain className="text-electric text-2xl" />,
-        title: lang === "fr" ? "Développement IA & ML" : "AI & ML Development",
-        headline: lang === "fr" ? "Décisions plus rapides et plus précises" : "Faster and more accurate decisions",
-        subtitle: lang === "fr" ? "Modèles fiables et sur mesure pour vos besoins métiers" : "Reliable, tailored models for your business needs",
+        icon: <FaRobot className="text-electric text-3xl" />,
+        title: lang === "fr" ? "IA Agentique & Générative" : "Agentic & Generative AI",
+        headline: lang === "fr" ? "Automatisation intelligente et assistance autonome" : "Intelligent automation and autonomous assistance",
+        subtitle: lang === "fr" ? "Systèmes qui comprennent, raisonnent et agissent de manière autonome" : "Systems that understand, reason, and act autonomously",
         desc:
           lang === "fr"
-            ? "• Classification clients pour cibler les offres marketing\n• Prévision de la demande pour optimiser les stocks\n• Détection de fraude et systèmes de recommandation"
-            : "• Customer classification for targeted marketing\n• Demand forecasting to optimize inventory\n• Fraud detection and recommender systems",
+            ? "• Assistants virtuels multi-agents pour l'analyse de documents\n• Pipelines génératifs pour la création de contenu\n• Copilots LLM intégrés aux outils métier\n• Workflows automatisés avec étapes traçables"
+            : "• Multi-agent virtual assistants for document analysis\n• Generative pipelines for content creation\n• LLM copilots integrated with business tools\n• Automated workflows with traceable steps",
+        link: "/agentic-ai",
       },
       {
-        icon: <FaChartLine className="text-electric text-2xl" />,
-        title: lang === "fr" ? "Science des données & Analytique" : "Data Science & Analytics",
-        headline: lang === "fr" ? "Visibilité accrue et décisions guidées par les données" : "Greater visibility and data-driven decision-making",
-        subtitle: lang === "fr" ? "Donnez du sens à vos données et pilotez par la valeur" : "Unlock insights and drive value from your data",
+        icon: <FaShieldAlt className="text-electric text-3xl" />,
+        title: lang === "fr" ? "IA Responsable & Conforme" : "Responsible & Compliant AI",
+        headline: lang === "fr" ? "Fiable, auditable, prêt pour la réglementation" : "Trustworthy, auditable, regulation-ready",
+        subtitle: lang === "fr" ? "Conception éthique et alignement avec les standards internationaux" : "Ethical design and alignment with international standards",
         desc:
           lang === "fr"
-            ? "• Nettoyage et structuration de grandes bases de données\n• Segmentation clients et tableaux de bord KPI\n• Détection d'anomalies et suivi en temps réel"
-            : "• Cleaning and structuring large datasets\n• Customer segmentation and KPI dashboards\n• Anomaly detection and real-time monitoring",
+            ? "• Évaluation de biais et d'équité avec monitoring\n• Tableaux de bord d'explicabilité et documentation\n• Vérifications automatisées pour la gouvernance\n• Préparation au RGPD et à l'AI Act européen"
+            : "• Bias and fairness evaluation with monitoring\n• Explainability dashboards and documentation\n• Automated checks for governance\n• GDPR and EU AI Act readiness",
+        link: "/responsible-ai",
       },
       {
-        icon: <FaRobot className="text-electric text-2xl" />,
-        title: lang === "fr" ? "IA Générative & LLMs" : "Generative AI & LLMs",
-        headline: lang === "fr" ? "Productivité accrue et meilleure qualité de service" : "Higher productivity and service quality",
-        subtitle: lang === "fr" ? "Exploitez la puissance des modèles de langage et de l'IA générative" : "Harness the power of large language models and generative AI",
+        icon: <FaChartLine className="text-electric text-3xl" />,
+        title: lang === "fr" ? "Intelligence Appliquée & Science des Données" : "Applied Intelligence & Data Science",
+        headline: lang === "fr" ? "Impact mesurable à partir des données" : "Measurable impact from data",
+        subtitle: lang === "fr" ? "Prévision, optimisation et analytique pour les opérations" : "Forecasting, optimization, and analytics for operations",
         desc:
           lang === "fr"
-            ? "• Assistants virtuels pour le support client\n• Résumés automatiques de documents réglementaires\n• Génération de contenus (rapports, réponses, prototypes)"
-            : "• Virtual assistants for customer support\n• Automated summarization of regulatory documents\n• Content generation (reports, responses, prototypes)",
-      },
-      {
-        icon: <FaCloud className="text-electric text-2xl" />,
-        title: lang === "fr" ? "Intégration & Déploiement IA" : "AI Integration & Deployment",
-        headline: lang === "fr" ? "Une IA fiable et prête à monter en charge" : "Reliable and scalable AI",
-        subtitle: lang === "fr" ? "De l'algorithme au produit, des solutions prêtes à l'usage" : "From algorithm to product, ready-to-use AI solutions",
-        desc:
-          lang === "fr"
-            ? "• Déploiement sur AWS (SageMaker, Lambda)\n• Création d'APIs scalables et workflows MLOps\n• Pipelines de déploiement continu"
-            : "• Deployment on AWS (SageMaker, Lambda)\n• Scalable APIs and MLOps workflows\n• Continuous deployment pipelines",
-      },
-      {
-        icon: <FaShieldAlt className="text-electric text-2xl" />,
-        title: lang === "fr" ? "IA Responsable & Conformité" : "Responsible AI & Compliance",
-        headline: lang === "fr" ? "Réduction des risques et confiance accrue" : "Reduced risks and stronger trust",
-        subtitle: lang === "fr" ? "Une IA éthique et conforme aux réglementations émergentes" : "Ethical AI aligned with emerging regulations",
-        desc:
-          lang === "fr"
-            ? "• Audits de biais, d'explicabilité et de conformité\n• Préparation au RGPD et à l'AI Act\n• Évaluations de risques et dispositifs de contrôle"
-            : "• Bias, explainability, and compliance audits\n• GDPR and AI Act readiness\n• Risk assessments and control mechanisms",
-      },
-      {
-        icon: <FaChalkboardTeacher className="text-electric text-2xl" />,
-        title: lang === "fr" ? "Formation & Conseil" : "Training & Consulting",
-        headline: lang === "fr" ? "Montée en compétences rapide et adoption durable" : "Rapid upskilling and sustainable adoption",
-        subtitle: lang === "fr" ? "Accompagner vos équipes pour adopter l'IA efficacement" : "Empowering your teams for effective AI adoption",
-        desc:
-          lang === "fr"
-            ? "• Formations ciblées pour dirigeants et équipes techniques\n• Ateliers pratiques sur l'IA générative appliquée aux métiers\n• Mentorat et accompagnement personnalisé"
-            : "• Targeted training for leadership and technical teams\n• Hands-on workshops on business-focused generative AI\n• Mentoring and personalized consulting",
+            ? "• Prévision de demande et optimisation d'inventaire\n• Détection d'anomalies et monitoring de risques\n• Pipelines ML cloud, APIs et tableaux de bord\n• Segmentation clients et analyse comportementale"
+            : "• Demand forecasting and inventory optimization\n• Anomaly detection and risk monitoring\n• Cloud ML pipelines, APIs, and dashboards\n• Customer segmentation and behavioral analysis",
+        link: "/applied-intelligence",
       },
     ],
   },
-  projects: {
-    title: lang === "fr" ? "Projets" : "Projects",
+  collaboration: {
+    title: lang === "fr" ? "Modèles de Collaboration" : "Collaboration Models",
+    subtitle: lang === "fr"
+      ? "Des partenariats flexibles pour chaque étape de votre parcours IA"
+      : "Flexible partnerships for every stage of your AI journey",
+    description: lang === "fr"
+      ? "HerixAI s'adapte à vos besoins spécifiques avec des modèles de collaboration sur mesure — du développement de prototypes à l'accompagnement stratégique, en passant par le renforcement des compétences internes."
+      : "HerixAI adapts to your specific needs with tailored collaboration models — from prototype development to strategic guidance and internal capability building.",
     items: [
-      { 
-        title: lang === "fr" ? "Réduire les coûts en éliminant les ruptures et surstocks" : "Cut costs by reducing stockouts and overstocking",
-        description: lang === "fr" 
-          ? "Beaucoup de détaillants perdent des ventes quand les rayons sont vides, et gaspillent de l'argent en stockage quand les produits s'accumulent."
-          : "Many retailers lose sales when shelves are empty, and waste money on storage when products pile up.",
-        solution: lang === "fr"
-          ? "La solution est un tableau de bord de prévision de la demande et d'optimisation des stocks."
-          : "The solution is a demand forecasting and stock optimization dashboard.",
-        details: lang === "fr"
-          ? "NovaMart a amélioré la disponibilité des stocks, réduit les coûts d'inventaire et pris des décisions d'achat plus intelligentes avec des prévisions alimentées par l'IA."
-          : "NovaMart improved stock availability, reduced inventory costs, and made smarter purchasing decisions with AI-driven forecasts.",
-        stack: "Streamlit, Prophet, ARIMA, Python", 
-        image: "/images/novamart.png",
-        gif: "/images/novamart.gif",
-        demo: "https://novamart.streamlit.app/",
-        github: "https://github.com/heritai/novamart-dashboard",
-        featured: true
-      },
-      { 
-        title: lang === "fr" ? "Augmenter les ventes avec des recommandations personnalisées" : "Boost sales with personalized recommendations",
-        description: lang === "fr" 
-          ? "Beaucoup de boutiques en ligne échouent à faire de l'upsell ou du cross-sell parce que les clients n'achètent qu'un seul article à la fois."
-          : "Many e-commerce shops fail to upsell or cross-sell because customers only buy one item at a time.",
-        solution: lang === "fr"
-          ? "La solution est un système de recommandation de produits."
-          : "The solution is a product recommendation system.",
-        details: lang === "fr"
-          ? "StyleHive a augmenté la taille moyenne du panier et découvert de nouvelles opportunités de cross-sell, menant à plus de revenus par client."
-          : "StyleHive increased average basket size and uncovered new cross-sell opportunities, leading to more revenue per customer.",
-        stack: "Streamlit, Association Rules, Collaborative Filtering, Python", 
-        image: "/images/stylehive.png",
-        gif: "/images/stylehive.gif",
-        demo: "https://stylehive.streamlit.app/",
-        github: "https://github.com/heritai/stylehive-dashboard",
-        featured: true
-      },
-      { 
-        title: lang === "fr" ? "Améliorer la rétention client et réduire les risques de churn" : "Improve customer retention and reduce churn risks",
+      {
+        title: lang === "fr" ? "Design & Développement de Produits" : "Product Design & Development",
         description: lang === "fr"
-          ? "Beaucoup d'entreprises gaspillent de l'argent sur du marketing non ciblé et perdent des clients sans comprendre pourquoi."
-          : "Many companies waste money on unfocused marketing and lose customers without understanding why.",
-        solution: lang === "fr"
-          ? "La solution est un tableau de bord qui segmente les clients avec du clustering et prédit la probabilité de churn avec du ML."
-          : "The solution is a dashboard that segments customers with clustering and predicts churn probability with ML.",
-        details: lang === "fr"
-          ? "InsightBank a réduit le churn et amélioré la rétention en ciblant les bons clients avec les bonnes actions."
-          : "InsightBank reduced churn and improved retention by targeting the right customers with the right actions.",
-        stack: "Streamlit, Clustering, ML, Python", 
-        image: "/images/insightbank.png",
-        gif: "/images/insightbank.gif",
-        demo: "https://insightbank.streamlit.app/",
-        github: "https://github.com/heritai/insightbank-churn-dashboard",
-        featured: true
+          ? "Création de solutions IA sur mesure, du prototype au déploiement en production"
+          : "Building custom AI solutions from prototype to production deployment",
+        bullets: [
+          lang === "fr"
+            ? "Conception de systèmes agentiques et génératifs pour automatiser les workflows complexes"
+            : "Design agentic and generative systems to automate complex workflows",
+          lang === "fr"
+            ? "Développement de tableaux de bord ML et APIs scalables sur AWS"
+            : "Develop ML dashboards and scalable APIs on AWS",
+          lang === "fr"
+            ? "Intégration de pipelines MLOps avec monitoring et conformité intégrés"
+            : "Integrate MLOps pipelines with built-in monitoring and compliance",
+        ],
       },
-      { 
-        title: lang === "fr" ? "Maximiser les revenus avec un tarification dynamique alimentée par l'IA" : "Maximize revenue with AI-driven dynamic pricing",
+      {
+        title: lang === "fr" ? "Conseil & Accompagnement Stratégique" : "Consultancy & Advisory",
         description: lang === "fr"
-          ? "Beaucoup d'hôtels perdent de l'argent avec des prix statiques : chambres vides en basse saison, ou vendues trop bon marché en haute saison."
-          : "Many hotels lose money with static prices: empty rooms in low season, or sold too cheaply in peak season.",
-        solution: lang === "fr"
-          ? "La solution est un moteur de tarification dynamique qui prédit la demande et recommande des prix optimaux."
-          : "A dynamic pricing engine that predicts demand and recommends optimal prices.",
-        details: lang === "fr"
-          ? "Roomify a augmenté l'occupation et les revenus en ajustant les prix intelligemment selon la demande."
-          : "Roomify increased occupancy and revenue by adjusting prices intelligently based on demand.",
-        stack: "Streamlit, Time Series, ML, Python", 
-        image: "/images/roomify.png",
-        gif: "/images/roomify.gif",
-        demo: "https://roomify-pricing.streamlit.app/",
-        github: "https://github.com/heritai/roomify-pricing-dashboard",
-        featured: true
+          ? "Accompagnement stratégique pour intégrer l'IA de manière responsable et efficace"
+          : "Strategic guidance to integrate AI responsibly and effectively",
+        bullets: [
+          lang === "fr"
+            ? "Audit de conformité et évaluation des risques IA (RGPD, AI Act)"
+            : "Compliance audits and AI risk assessment (GDPR, AI Act)",
+          lang === "fr"
+            ? "Feuille de route IA adaptée à vos objectifs métier et contraintes"
+            : "AI roadmap tailored to your business objectives and constraints",
+          lang === "fr"
+            ? "Revue d'architecture et recommandations pour systèmes IA responsables"
+            : "Architecture review and recommendations for responsible AI systems",
+        ],
       },
-      { 
-        title: lang === "fr" ? "Rester en avance sur les risques avec la détection d'anomalies alimentée par l'IA" : "Stay ahead of risks with AI-powered anomaly detection",
+      {
+        title: lang === "fr" ? "Transfert de Connaissances & Formation" : "Knowledge Transfer & Training",
         description: lang === "fr"
-          ? "Beaucoup d'entreprises perdent de l'argent à cause de la fraude, d'erreurs système ou de pics de transactions inhabituels car elles manquent d'outils de surveillance en temps réel."
-          : "Many companies lose money to fraud, system errors, or unusual transaction spikes because they lack real-time monitoring tools.",
-        solution: lang === "fr"
-          ? "La solution est un tableau de bord qui surveille les transactions en temps réel, signale les anomalies et fournit des insights métier clairs."
-          : "A dashboard that monitors transactions in real time, flags anomalies, and provides clear business insights.",
-        details: lang === "fr"
-          ? "TransacGuard a aidé à réduire les risques financiers, détecter la fraude plus tôt et améliorer la fiabilité opérationnelle avec des insights transparents pour les décideurs."
-          : "TransacGuard helped reduce financial risks, detect fraud earlier, and improve operational reliability with transparent insights for decision-makers.",
-        stack: "Streamlit, Anomaly Detection, ML, Python", 
-        image: "/images/transacguard.png",
-        gif: "/images/transacguard.gif",
-        demo: "https://transacguard.streamlit.app/",
-        github: "https://github.com/heritai/transacguard-anomaly-dashboard",
-        featured: true
-      },
-      { 
-        title: lang === "fr" ? "Maximiser les ventes et le ROI avec l'optimisation marketing alimentée par l'IA" : "Maximize sales and ROI with AI-powered marketing optimization",
-        description: lang === "fr"
-          ? "Beaucoup d'entreprises dépensent trop sur des campagnes qui ne convertissent pas, gaspillant une grande partie de leur budget marketing."
-          : "Many companies overspend on campaigns that don't convert, wasting large portions of their marketing budget.",
-        solution: lang === "fr"
-          ? "La solution est un tableau de bord qui lie les dépenses marketing aux ventes, prédit le ROI et suggère de meilleures allocations budgétaires par canal."
-          : "A dashboard that links marketing spend to sales, predicts ROI, and suggests better budget allocations across channels.",
-        details: lang === "fr"
-          ? "AdOptima a amélioré le ROI et boosté les ventes en réallouant les budgets basés sur des insights alimentés par l'IA."
-          : "AdOptima improved ROI and boosted sales by reallocating budgets based on AI-driven insights.",
-        stack: "Streamlit, Marketing Analytics, ML, Python", 
-        image: "/images/adoptima.png",
-        gif: "/images/adoptima.gif",
-        demo: "https://adoptima.streamlit.app/",
-        github: "https://github.com/heritai/adoptima-marketing-dashboard",
-        featured: true
-      },
-      { 
-        title: lang === "fr" ? "Réduire les coûts de main-d'œuvre et améliorer l'efficacité avec la planification de personnel alimentée par l'IA" : "Cut labor costs and improve efficiency with AI-driven workforce scheduling",
-        description: lang === "fr"
-          ? "La planification manuelle cause des heures supplémentaires, une mauvaise couverture et des employés mécontents."
-          : "Manual scheduling causes overtime, poor coverage, and unhappy employees.",
-        solution: lang === "fr"
-          ? "La solution est un tableau de bord qui génère des plannings optimisés basés sur la demande, la disponibilité et les règles de travail."
-          : "A dashboard that generates optimized schedules based on demand, availability, and labor rules.",
-        details: lang === "fr"
-          ? "ShiftWise a réduit les coûts de main-d'œuvre, amélioré la couverture des équipes et libéré les managers de heures de planification manuelle."
-          : "ShiftWise reduced labor costs, improved shift coverage, and freed managers from hours of manual planning.",
-        stack: "Streamlit, Optimization, ML, Python", 
-        image: "/images/shiftwise.png",
-        gif: "/images/ShiftWise.gif",
-        demo: "https://shiftwise.streamlit.app/",
-        github: "https://github.com/heritai/shiftwise-scheduling-dashboard",
-        featured: true
-      },
-      { 
-        title: lang === "fr" ? "Gagner du temps et booster les ventes avec du contenu marketing alimenté par l'IA" : "Save time and boost sales with AI-powered marketing content",
-        description: lang === "fr"
-          ? "Créer des descriptions de produits, emails et posts cohérents prend des heures et épuise les équipes marketing."
-          : "Creating consistent product descriptions, emails, and posts takes hours and drains marketing teams.",
-        solution: lang === "fr"
-          ? "La solution est un tableau de bord qui génère instantanément du contenu marketing sur tous les canaux et tons, alimenté par Mistral 7B."
-          : "A dashboard that generates instant marketing content across channels and tones, powered by Mistral 7B.",
-        details: lang === "fr"
-          ? "BrandBoost a réduit le temps de préparation des campagnes et produit du contenu engageant et cohérent à grande échelle en anglais et français."
-          : "BrandBoost reduced campaign preparation time and produced engaging, consistent content at scale in both English and French.",
-        stack: "Hugging Face, Mistral 7B, Streamlit, Python", 
-        image: "/images/brandboost.png",
-        gif: "/images/brandboost.gif",
-        demo: "https://huggingface.co/spaces/youtah/brandboost-content-generator",
-        github: "https://github.com/heritai/brandboost-content-generator",
-        featured: true
-      },
-      { 
-        title: lang === "fr" ? "Assurer la conformité et réduire les risques avec l'audit IA automatisé" : "Ensure compliance and reduce risks with automated AI auditing",
-        description: lang === "fr"
-          ? "Les entreprises peinent à auditer leurs systèmes IA pour la conformité RGPD et l'AI Act, exposant à des risques réglementaires et financiers."
-          : "Companies struggle to audit their AI systems for GDPR and AI Act compliance, exposing them to regulatory and financial risks.",
-        solution: lang === "fr"
-          ? "La solution est un outil d'audit automatisé sur AWS qui évalue la conformité, détecte les biais et génère des rapports de conformité."
-          : "An automated AWS-based audit tool that evaluates compliance, detects biases, and generates compliance reports.",
-        details: lang === "fr"
-          ? "L'outil d'audit a identifié des problèmes de conformité critiques, réduit les risques réglementaires et automatisé les processus d'audit IA complexes."
-          : "The audit tool identified critical compliance issues, reduced regulatory risks, and automated complex AI auditing processes.",
-        stack: "AWS, SageMaker, Python, Compliance", 
-        image: "/images/audit_tool.png",
-        gif: "/images/audit_tool.gif",
-        demo: "https://ml-audit.streamlit.app/",
-        github: "https://github.com/heritai/ml-cloud-audit",
-        featured: true
-      },
-      { 
-        title: lang === "fr" ? "Accélérer la conformité avec des assistants IA multi-agents intelligents" : "Accelerate compliance with intelligent multi-agent AI assistants",
-        description: lang === "fr"
-          ? "Les équipes juridiques et de conformité sont submergées par la complexité des réglementations IA et ont besoin d'assistance intelligente."
-          : "Legal and compliance teams are overwhelmed by AI regulation complexity and need intelligent assistance.",
-        solution: lang === "fr"
-          ? "La solution est un système multi-agents basé sur LLM qui guide les équipes à travers les processus de conformité avec des réponses contextuelles."
-          : "A multi-agent LLM-based system that guides teams through compliance processes with contextual responses.",
-        details: lang === "fr"
-          ? "L'assistant multi-agents a accéléré les processus de conformité, réduit les erreurs et fourni des conseils personnalisés pour chaque cas d'usage."
-          : "The multi-agent assistant accelerated compliance processes, reduced errors, and provided personalized guidance for each use case.",
-        stack: "LLM, Multi-Agent, Python, Compliance", 
-        image: "/images/multi-agent.png",
-        gif: "/images/multi-agent.gif",
-        demo: "https://compliance-assistant.streamlit.app/",
-        github: "https://github.com/heritai/llm-multi-agent-assistant",
-        featured: true
+          ? "Formation et mentorat pour développer les compétences IA de vos équipes"
+          : "Training and mentoring to build AI capabilities within your teams",
+        bullets: [
+          lang === "fr"
+            ? "Ateliers pratiques sur l'IA générative et les systèmes multi-agents"
+            : "Hands-on workshops on generative AI and multi-agent systems",
+          lang === "fr"
+            ? "Formation à l'IA responsable, explicabilité et conformité réglementaire"
+            : "Training on responsible AI, explainability, and regulatory compliance",
+          lang === "fr"
+            ? "Mentorat technique pour le déploiement de solutions IA en production"
+            : "Technical mentoring for deploying AI solutions to production",
+        ],
       },
     ],
   },
-  about: {
-    title: lang === "fr" ? "À propos" : "About",
-    text:
-      lang === "fr"
-        ? "HerixAI est une micro-entreprise de conseil en intelligence artificielle basée à Paris. Elle est dirigée par Yousef Taheri, docteur en Intelligence Artificielle (Sorbonne Université). En tant que consultant indépendant, il aide startups, PME et institutions à intégrer des solutions IA efficaces, évolutives et conformes aux réglementations."
-        : "HerixAI is an independent AI consulting practice based in Paris, France. It is led by Yousef Taheri, PhD in Artificial Intelligence (Sorbonne University). As an independent consultant, he helps startups, SMEs, and institutions adopt AI solutions that are efficient, scalable, and compliant with regulations.",
-  },
-  publications: {
-    title: lang === "fr" ? "Publications & Insights" : "Publications & Insights",
+  insights: {
+    title: lang === "fr" ? "Insights" : "Insights",
+    subtitle: lang === "fr"
+      ? "Partager connaissances et perspectives sur l'IA responsable"
+      : "Sharing knowledge and perspectives on responsible AI",
+    description: lang === "fr"
+      ? "HerixAI contribue à l'écosystème IA en partageant recherches, expériences pratiques et réflexions sur les enjeux de l'intelligence artificielle responsable et performante."
+      : "HerixAI contributes to the AI ecosystem by sharing research, practical experiences, and insights on responsible and high-performance artificial intelligence.",
     items: [
-      {
-        icon: <FaGraduationCap className="text-electric text-2xl" />,
-        title: lang === "fr" ? "Thèse de doctorat" : "Doctoral Thesis",
-        description: lang === "fr" ? "Intelligence Artificielle - Sorbonne Université" : "Artificial Intelligence - Sorbonne University",
-        href: "http://theses.fr/2024SORUS225",
-        type: "academic"
-      },
       {
         icon: <FaFileAlt className="text-electric text-2xl" />,
         title: lang === "fr" ? "IA Responsable dans le Cloud" : "Responsible AI in the Cloud",
         description: lang === "fr" ? "Automatisation des audits ML sur AWS" : "Automating ML audits on AWS",
         href: "https://medium.com/p/responsible-ai-in-the-cloud-automating-ml-audits-on-aws-872b761093cb",
         type: "article"
-      },
-      {
-        icon: <FaUserGraduate className="text-electric text-2xl" />,
-        title: lang === "fr" ? "Profil Google Scholar" : "Google Scholar Profile",
-        description: lang === "fr" ? "Publications et citations académiques" : "Academic publications and citations",
-        href: "http://scholar.google.com/citations?user=IN72HckAAAAJ",
-        type: "profile"
       }
     ]
   },
   contact: {
     title: lang === "fr" ? "Contact" : "Contact",
-    text: lang === "fr" ? "Travaillons ensemble pour construire une IA de confiance." : "Let’s work together to build AI you can trust.",
+    subtitle: lang === "fr"
+      ? "Construisons ensemble votre projet IA"
+      : "Let's build your AI project together",
+    description: lang === "fr"
+      ? "HerixAI est prêt à discuter de vos besoins en IA — que ce soit pour un projet spécifique, un audit de conformité, ou simplement échanger sur les possibilités de l'intelligence artificielle pour votre entreprise."
+      : "HerixAI is ready to discuss your AI needs — whether for a specific project, compliance audit, or simply exploring AI possibilities for your organization.",
+    text: lang === "fr" ? "Travaillons ensemble pour construire une IA de confiance." : "Let's work together to build AI you can trust.",
     name: lang === "fr" ? "Nom" : "Name",
     email: "Email",
     message: lang === "fr" ? "Message" : "Message",
@@ -342,87 +173,153 @@ const t = (lang: Lang) => ({
 
 export default function Home() {
   const [lang, setLang] = useState<Lang>("fr");
-  const [theme, setTheme] = useState<Theme>("dark");
   const [formSubmitted, setFormSubmitted] = useState(false);
-  const [showAllProjects, setShowAllProjects] = useState(false);
-  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const i = useMemo(() => t(lang), [lang]);
 
   useEffect(() => {
     // Init from localStorage
     const storedLang = typeof window !== "undefined" ? (localStorage.getItem("herixai_lang") as Lang | null) : null;
-    const storedTheme = typeof window !== "undefined" ? (localStorage.getItem("herixai_theme") as Theme | null) : null;
     if (storedLang) setLang(storedLang);
-    if (storedTheme) setTheme(storedTheme);
   }, []);
-
-  // Handle ESC key to close modal
-  useEffect(() => {
-    const handleEsc = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        setSelectedProject(null);
-      }
-    };
-    
-    if (selectedProject) {
-      document.addEventListener('keydown', handleEsc);
-      document.body.style.overflow = 'hidden'; // Prevent background scrolling
-    } else {
-      document.body.style.overflow = 'unset';
-    }
-    
-    return () => {
-      document.removeEventListener('keydown', handleEsc);
-      document.body.style.overflow = 'unset';
-    };
-  }, [selectedProject]);
 
   useEffect(() => {
     if (typeof document !== "undefined") {
-      document.documentElement.setAttribute("data-theme", theme === "light" ? "light" : "dark");
+      document.documentElement.setAttribute("data-theme", "dark");
     }
-    if (typeof window !== "undefined") {
-      localStorage.setItem("herixai_theme", theme);
-    }
-  }, [theme]);
+  }, []);
+
+  const [time, setTime] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTime((t) => t + 0.01);
+    }, 50);
+    return () => clearInterval(interval);
+  }, []);
+
+  // Generate particle positions with movement
+  const particles = useMemo(() => {
+    return Array.from({ length: 40 }, (_, i) => ({
+      id: i,
+      baseX: (i * 137.5) % 100,
+      baseY: (i * 67.3) % 100,
+      size: 3 + (i % 3),
+      color: i % 2 === 0 ? '#3B82F6' : '#22D3EE',
+      speedX: (Math.sin(i * 0.5) * 0.3) + 0.2,
+      speedY: (Math.cos(i * 0.7) * 0.3) + 0.2,
+      radiusX: 5 + (i % 3) * 2,
+      radiusY: 5 + ((i + 1) % 3) * 2,
+    }));
+  }, []);
+
+  // Calculate current particle positions
+  const currentPositions = useMemo(() => {
+    return particles.map((p) => ({
+      ...p,
+      x: p.baseX + Math.sin(time * p.speedX) * p.radiusX,
+      y: p.baseY + Math.cos(time * p.speedY) * p.radiusY,
+    }));
+  }, [particles, time]);
 
   return (
     <main className="relative min-h-screen overflow-x-hidden">
+      {/* Particle Network Background */}
       <div className="parallax-bg">
-        <motion.div aria-hidden className="absolute -top-40 right-0 h-[40rem] w-[40rem] rounded-full blur-3xl" style={{ background: "radial-gradient(circle, #00BFFF33, transparent 60%)" }} animate={{ y: [0, 20, 0] }} transition={{ duration: 12, repeat: Infinity }} />
-        <motion.div aria-hidden className="absolute -bottom-40 -left-20 h-[36rem] w-[36rem] rounded-full blur-3xl" style={{ background: "radial-gradient(circle, #9D4EDD33, transparent 60%)" }} animate={{ y: [0, -20, 0] }} transition={{ duration: 14, repeat: Infinity }} />
+        <svg className="absolute inset-0 w-full h-full" style={{ minHeight: '200vh' }}>
+          <defs>
+            <filter id="particleGlow">
+              <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+              <feMerge>
+                <feMergeNode in="coloredBlur"/>
+                <feMergeNode in="SourceGraphic"/>
+              </feMerge>
+            </filter>
+          </defs>
+          
+          {/* Connecting Lines */}
+          {currentPositions.map((p1, i) => 
+            currentPositions.slice(i + 1).map((p2, j) => {
+              const dx = p2.x - p1.x;
+              const dy = p2.y - p1.y;
+              const distance = Math.sqrt(dx * dx + dy * dy);
+              // Only connect nearby particles (dynamic connections!)
+              if (distance < 15) {
+                return (
+                  <motion.line
+                    key={`line-${i}-${j}`}
+                    x1={`${p1.x}%`}
+                    y1={`${p1.y}%`}
+                    x2={`${p2.x}%`}
+                    y2={`${p2.y}%`}
+                    stroke={p1.color}
+                    strokeWidth="0.5"
+                    opacity={0.2}
+                    strokeLinecap="round"
+                    initial={{ pathLength: 0, opacity: 0 }}
+                    animate={{ pathLength: 1, opacity: 0.2 }}
+                    exit={{ pathLength: 0, opacity: 0 }}
+                    transition={{ duration: 0.3 }}
+                  />
+                );
+              }
+              return null;
+            })
+          )}
+          
+          {/* Particles */}
+          {currentPositions.map((p) => {
+            return (
+              <motion.circle
+                key={`particle-${p.id}`}
+                cx={`${p.x}%`}
+                cy={`${p.y}%`}
+                r={p.size}
+                fill={p.color}
+                filter="url(#particleGlow)"
+                animate={{
+                  opacity: [0.4, 0.8, 0.4],
+                  scale: [1, 1.2, 1],
+                }}
+                transition={{
+                  duration: 3 + (p.id % 4),
+                  repeat: Infinity,
+                  delay: p.id * 0.1,
+                  ease: "easeInOut"
+                }}
+              />
+            );
+          })}
+        </svg>
+        
+        {/* Subtle gradient overlays */}
+        <motion.div aria-hidden className="absolute -top-40 right-0 h-[40rem] w-[40rem] rounded-full blur-3xl" style={{ background: "radial-gradient(circle, rgba(139, 92, 246, 0.08), transparent 60%)" }} animate={{ y: [0, 20, 0] }} transition={{ duration: 12, repeat: Infinity }} />
+        <motion.div aria-hidden className="absolute -bottom-40 -left-20 h-[36rem] w-[36rem] rounded-full blur-3xl" style={{ background: "radial-gradient(circle, rgba(6, 182, 212, 0.08), transparent 60%)" }} animate={{ y: [0, -20, 0] }} transition={{ duration: 14, repeat: Infinity }} />
       </div>
 
-      <header className="sticky top-0 z-20 backdrop-blur supports-[backdrop-filter]:bg-black/40 border-b border-foreground/10">
+      <header className="sticky top-0 z-20 backdrop-blur supports-[backdrop-filter]:bg-background/80 border-b border-electric/20 shadow-lg shadow-electric/5">
         <div className="mx-auto max-w-7xl px-6 py-4 flex items-center justify-between">
-          <a href="#home" className="flex items-center gap-2">
-            <span className="text-2xl font-medium neon-text">HerixAI</span>
+          <a href="#home" className="flex items-center gap-3">
+            <img src="/logos/logo-hx-3d-icon.svg" alt="HerixAI" className="h-10 w-10" />
+            <span className="text-2xl font-bold text-white">HerixAI</span>
           </a>
           <nav className="hidden md:flex items-center gap-8 text-sm">
             <a href="#home" className="hover:text-electric">{i.nav.home}</a>
-            <a href="#services" className="hover:text-electric">{i.nav.services}</a>
-            <a href="#projects" className="hover:text-electric">{i.nav.projects}</a>
-            <a href="#about" className="hover:text-electric">{i.nav.about}</a>
-            <a href="#publications" className="hover:text-electric">{i.publications.title}</a>
+            <a href="#expertise" className="hover:text-electric">{i.nav.expertise}</a>
+            <a href="#collaboration" className="hover:text-electric">{i.nav.collaboration}</a>
+            <a href="#insights" className="hover:text-electric">{i.nav.insights}</a>
+            <Link href="/about" className="hover:text-electric">{i.nav.about}</Link>
             <a href="#contact" className="hover:text-electric">{i.nav.contact}</a>
           </nav>
           <div className="flex items-center gap-3">
-            <button
-              aria-label="Switch color theme"
-              className="glass-card px-3 py-1 text-sm hover:glow-electric"
-              onClick={() => setTheme((t) => (t === "dark" ? "light" : "dark"))}
-            >
-              {theme === "dark" ? (lang === "fr" ? "Mode clair" : "Light mode") : (lang === "fr" ? "Mode sombre" : "Dark mode")}
-            </button>
             <a
               href="https://calendly.com/ytaheris/30min"
-              target="_blank"
+            target="_blank"
               rel="noreferrer noopener"
-              className="hidden md:inline-flex items-center gap-2 px-4 py-2 rounded-2xl border border-electric text-electric hover:bg-electric hover:text-black glow-electric transition"
-            >
+              className="hidden md:inline-flex items-center gap-2 px-4 py-2 rounded-2xl border border-electric text-electric hover:bg-electric hover:text-white transition"
+          >
               {i.hero.demo}
-            </a>
-            <button aria-label="Switch language" className="glass-card glow-electric px-3 py-1 text-sm" onClick={() => setLang((l) => (l === "fr" ? "en" : "fr"))}>
+          </a>
+            <button aria-label="Switch language" className="glass-card px-3 py-1 text-sm" onClick={() => setLang((l) => (l === "fr" ? "en" : "fr"))}>
               {lang === "fr" ? "🇫🇷 FR" : "🇬🇧 EN"}
             </button>
           </div>
@@ -430,285 +327,586 @@ export default function Home() {
       </header>
 
       <section id="home" className="section relative">
-        <div className="mx-auto max-w-7xl px-6 pt-20 pb-28">
-          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }} className="text-center">
-            <h1 className="text-5xl md:text-7xl font-medium tracking-tight">
-              <span className="neon-text">HerixAI</span>
-            </h1>
-            <p className="mt-6 text-lg md:text-2xl text-foreground/80 max-w-3xl mx-auto">{i.hero.subtitle}</p>
-            <div className="flex items-center justify-center gap-4 mt-10">
-              <a href="#services" className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl bg-electric text-black font-medium glow-electric hover:scale-[1.02] transition">
-                {i.hero.cta} <FaArrowDown />
-              </a>
-              <a
-                href="https://calendly.com/ytaheris/30min"
-                target="_blank"
-                rel="noreferrer noopener"
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl border border-electric text-electric hover:bg-electric hover:text-black glow-electric transition"
+        <div className="mx-auto max-w-7xl px-6 pt-20 pb-20">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center min-h-[80vh]">
+            {/* Left Side - Text Content */}
+            <motion.div 
+              initial={{ opacity: 0, x: -30 }} 
+              whileInView={{ opacity: 1, x: 0 }} 
+              viewport={{ once: true }} 
+              transition={{ duration: 0.8 }}
+              className="space-y-8"
+            >
+              <div className="space-y-6">
+                <motion.h1 
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, delay: 0.2 }}
+                  className="text-5xl md:text-7xl font-medium tracking-tight"
+                >
+                  <span className="neon-text">HerixAI</span>
+                </motion.h1>
+                
+                <motion.p 
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, delay: 0.4 }}
+                  className="text-lg md:text-2xl text-foreground/80 leading-relaxed"
+                >
+                  {i.hero.subtitle}
+                </motion.p>
+              </div>
+              
+              <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: 0.6 }}
+                className="flex flex-col sm:flex-row items-start gap-4"
               >
-                {i.hero.demo}
-              </a>
-            </div>
-          </motion.div>
+                <a href="#expertise" className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl bg-electric text-white font-medium hover:scale-[1.02] transition shadow-lg shadow-electric/30">
+                  {i.hero.cta} <FaArrowDown />
+        </a>
+        <a
+                  href="https://calendly.com/ytaheris/30min"
+          target="_blank"
+                  rel="noreferrer noopener"
+                  className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl border-2 border-electric text-electric hover:bg-electric hover:text-white transition"
+                >
+                  {i.hero.demo}
+                </a>
+              </motion.div>
+            </motion.div>
+
+            {/* Right Side - AI Solar System Animation */}
+            <motion.div 
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, delay: 0.3 }}
+              className="relative h-96 flex items-center justify-center overflow-visible"
+            >
+              <svg
+                className="w-full h-full max-w-lg"
+                viewBox="0 0 600 600"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <defs>
+                  {/* Glow Filters */}
+                  <filter id="sunGlow">
+                    <feGaussianBlur stdDeviation="8" result="coloredBlur"/>
+                    <feMerge>
+                      <feMergeNode in="coloredBlur"/>
+                      <feMergeNode in="coloredBlur"/>
+                      <feMergeNode in="SourceGraphic"/>
+                    </feMerge>
+                  </filter>
+                  <filter id="planetGlow">
+                    <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+                    <feMerge>
+                      <feMergeNode in="coloredBlur"/>
+                      <feMergeNode in="SourceGraphic"/>
+                    </feMerge>
+                  </filter>
+                  <filter id="starGlow">
+                    <feGaussianBlur stdDeviation="1.5" result="coloredBlur"/>
+                    <feMerge>
+                      <feMergeNode in="coloredBlur"/>
+                      <feMergeNode in="SourceGraphic"/>
+                    </feMerge>
+                  </filter>
+                  
+                  {/* Gradients for 3D effect */}
+                  <radialGradient id="sunGradient" cx="35%" cy="35%">
+                    <stop offset="0%" stopColor="#FFFFFF" stopOpacity="1"/>
+                    <stop offset="40%" stopColor="#80F6FF" stopOpacity="1"/>
+                    <stop offset="70%" stopColor="#00F0FF" stopOpacity="1"/>
+                    <stop offset="100%" stopColor="#00D0E8" stopOpacity="0.95"/>
+                  </radialGradient>
+                  <radialGradient id="planetGradient" cx="30%" cy="30%">
+                    <stop offset="0%" stopColor="#FFFFFF" stopOpacity="1"/>
+                    <stop offset="50%" stopColor="#D893FF" stopOpacity="1"/>
+                    <stop offset="100%" stopColor="#B026FF" stopOpacity="1"/>
+                  </radialGradient>
+                </defs>
+                
+                {/* Background Stars */}
+                {[...Array(50)].map((_, i) => {
+                  const x = (i * 73 + 50) % 600;
+                  const y = (i * 97 + 30) % 600;
+                  const size = 1.5 + (i % 3);
+                  const colors = ['#00F0FF', '#B026FF', '#7B2CBF', '#C4B5FD'];
+                  const color = colors[i % 4];
+                  return (
+                    <motion.circle
+                      key={`star-${i}`}
+                      initial={{ opacity: 0 }}
+                      animate={{ 
+                        opacity: [0.5, 1, 0.5],
+                        scale: [1, 1.2, 1]
+                      }}
+                      transition={{
+                        duration: 1.5 + (i % 5) * 0.3,
+                        repeat: Infinity,
+                        delay: i * 0.03,
+                        ease: "easeInOut"
+                      }}
+                      cx={x}
+                      cy={y}
+                      r={size}
+                      fill={color}
+                      filter="url(#starGlow)"
+                    />
+                  );
+                })}
+                
+                {/* Orbit Path */}
+                <motion.circle
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 0.4 }}
+                  transition={{ duration: 1, delay: 0.5 }}
+                  cx="300"
+                  cy="300"
+                  r="210"
+                  fill="none"
+                  stroke="#B026FF"
+                  strokeWidth="1.5"
+                  strokeDasharray="8,6"
+                />
+                
+                {/* Central Sun - Agentic AI (Big 3D Circle) */}
+                <motion.g
+                  initial={{ scale: 0, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  transition={{ duration: 1, delay: 0.5, ease: "easeOut" }}
+                >
+                  {/* Sun Glow Rings */}
+                  <motion.circle
+                    animate={{ 
+                      r: [70, 95, 70],
+                      opacity: [0.3, 0.1, 0.3]
+                    }}
+                    transition={{ 
+                      duration: 3,
+                      repeat: Infinity,
+                      ease: "easeInOut"
+                    }}
+                    cx="300"
+                    cy="300"
+                    fill="none"
+                    stroke="url(#sunGradient)"
+                    strokeWidth="3"
+                  />
+                  <motion.circle
+                    animate={{ 
+                      r: [70, 120, 70],
+                      opacity: [0.2, 0.05, 0.2]
+                    }}
+                    transition={{ 
+                      duration: 3,
+                      repeat: Infinity,
+                      ease: "easeInOut",
+                      delay: 1
+                    }}
+                    cx="300"
+                    cy="300"
+                    fill="none"
+                    stroke="url(#sunGradient)"
+                    strokeWidth="2"
+                  />
+                  
+                  {/* Main Sun Body - 3D effect */}
+                  <circle
+                    cx="300"
+                    cy="300"
+                    r="70"
+                    fill="url(#sunGradient)"
+                    filter="url(#sunGlow)"
+                  />
+                  
+                  {/* Sun Rotation Effect - Animated Spots */}
+                  {[0, 120, 240].map((angle, i) => (
+                    <motion.ellipse
+                      key={`sun-spot-${i}`}
+                      animate={{
+                        rotate: [angle, angle + 360]
+                      }}
+                      transition={{
+                        duration: 20,
+                        repeat: Infinity,
+                        ease: "linear"
+                      }}
+                      cx="300"
+                      cy="300"
+                      rx="68"
+                      ry="65"
+                      fill="none"
+                      stroke="#00C0D0"
+                      strokeWidth="2"
+                      opacity="0.4"
+                      style={{ transformOrigin: "300px 300px" }}
+                    />
+                  ))}
+                  
+                  {/* Brain Icon on Agentic AI */}
+                  <motion.foreignObject
+                    x="255"
+                    y="255"
+                    width="90"
+                    height="90"
+                    initial={{ scale: 0, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    transition={{ duration: 0.8, delay: 1.2 }}
+                  >
+                    <div className="flex items-center justify-center w-full h-full">
+                      <FaBrain className="text-white text-7xl" style={{ filter: 'drop-shadow(0 0 10px rgba(255,255,255,0.7))' }} />
+                    </div>
+                  </motion.foreignObject>
+                </motion.g>
+                
+                {/* Orbiting Planet - Responsible AI (Bigger, Slower Circle) */}
+                <motion.g
+                  initial={{ scale: 0, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  transition={{ duration: 0.8, delay: 1 }}
+                >
+                  {/* Planet Glow */}
+                  <motion.circle
+                    animate={{
+                      cx: [
+                        300 + 210 * Math.cos(0),
+                        300 + 210 * Math.cos(Math.PI / 4),
+                        300 + 210 * Math.cos(Math.PI / 2),
+                        300 + 210 * Math.cos(3 * Math.PI / 4),
+                        300 + 210 * Math.cos(Math.PI),
+                        300 + 210 * Math.cos(5 * Math.PI / 4),
+                        300 + 210 * Math.cos(3 * Math.PI / 2),
+                        300 + 210 * Math.cos(7 * Math.PI / 4),
+                        300 + 210 * Math.cos(2 * Math.PI)
+                      ],
+                      cy: [
+                        300 + 210 * Math.sin(0),
+                        300 + 210 * Math.sin(Math.PI / 4),
+                        300 + 210 * Math.sin(Math.PI / 2),
+                        300 + 210 * Math.sin(3 * Math.PI / 4),
+                        300 + 210 * Math.sin(Math.PI),
+                        300 + 210 * Math.sin(5 * Math.PI / 4),
+                        300 + 210 * Math.sin(3 * Math.PI / 2),
+                        300 + 210 * Math.sin(7 * Math.PI / 4),
+                        300 + 210 * Math.sin(2 * Math.PI)
+                      ]
+                    }}
+                    transition={{
+                      duration: 25,
+                      repeat: Infinity,
+                      ease: "linear"
+                    }}
+                    r="40"
+                    fill="url(#planetGradient)"
+                    filter="url(#planetGlow)"
+                  />
+                  
+                  {/* Planet Rotation - Surface Details */}
+                  <motion.circle
+                    animate={{
+                      cx: [
+                        300 + 210 * Math.cos(0),
+                        300 + 210 * Math.cos(Math.PI / 4),
+                        300 + 210 * Math.cos(Math.PI / 2),
+                        300 + 210 * Math.cos(3 * Math.PI / 4),
+                        300 + 210 * Math.cos(Math.PI),
+                        300 + 210 * Math.cos(5 * Math.PI / 4),
+                        300 + 210 * Math.cos(3 * Math.PI / 2),
+                        300 + 210 * Math.cos(7 * Math.PI / 4),
+                        300 + 210 * Math.cos(2 * Math.PI)
+                      ],
+                      cy: [
+                        300 + 210 * Math.sin(0),
+                        300 + 210 * Math.sin(Math.PI / 4),
+                        300 + 210 * Math.sin(Math.PI / 2),
+                        300 + 210 * Math.sin(3 * Math.PI / 4),
+                        300 + 210 * Math.sin(Math.PI),
+                        300 + 210 * Math.sin(5 * Math.PI / 4),
+                        300 + 210 * Math.sin(3 * Math.PI / 2),
+                        300 + 210 * Math.sin(7 * Math.PI / 4),
+                        300 + 210 * Math.sin(2 * Math.PI)
+                      ]
+                    }}
+                    transition={{
+                      duration: 25,
+                      repeat: Infinity,
+                      ease: "linear"
+                    }}
+                    r="36"
+                    fill="none"
+                    stroke="#7B2CBF"
+                    strokeWidth="2"
+                    strokeDasharray="4,5"
+                    opacity="0.5"
+                  />
+                  
+                  {/* Shield Icon on Responsible AI - Orbits with the planet */}
+                  <motion.foreignObject
+                    width="50"
+                    height="50"
+                    animate={{
+                      x: [
+                        300 + 210 * Math.cos(0) - 25,
+                        300 + 210 * Math.cos(Math.PI / 4) - 25,
+                        300 + 210 * Math.cos(Math.PI / 2) - 25,
+                        300 + 210 * Math.cos(3 * Math.PI / 4) - 25,
+                        300 + 210 * Math.cos(Math.PI) - 25,
+                        300 + 210 * Math.cos(5 * Math.PI / 4) - 25,
+                        300 + 210 * Math.cos(3 * Math.PI / 2) - 25,
+                        300 + 210 * Math.cos(7 * Math.PI / 4) - 25,
+                        300 + 210 * Math.cos(2 * Math.PI) - 25
+                      ],
+                      y: [
+                        300 + 210 * Math.sin(0) - 25,
+                        300 + 210 * Math.sin(Math.PI / 4) - 25,
+                        300 + 210 * Math.sin(Math.PI / 2) - 25,
+                        300 + 210 * Math.sin(3 * Math.PI / 4) - 25,
+                        300 + 210 * Math.sin(Math.PI) - 25,
+                        300 + 210 * Math.sin(5 * Math.PI / 4) - 25,
+                        300 + 210 * Math.sin(3 * Math.PI / 2) - 25,
+                        300 + 210 * Math.sin(7 * Math.PI / 4) - 25,
+                        300 + 210 * Math.sin(2 * Math.PI) - 25
+                      ]
+                    }}
+                    transition={{
+                      duration: 25,
+                      repeat: Infinity,
+                      ease: "linear"
+                    }}
+                  >
+                    <div className="flex items-center justify-center w-full h-full">
+                      <FaShieldAlt className="text-white text-5xl" style={{ filter: 'drop-shadow(0 0 8px rgba(255,255,255,0.6))' }} />
+                    </div>
+                  </motion.foreignObject>
+                </motion.g>
+                
+                {/* Small Orbiting Circles/Moons */}
+                {[0, 90, 180, 270].map((startAngle, idx) => (
+                  <motion.g
+                    key={`moon-${idx}`}
+                    animate={{
+                      rotate: [startAngle, startAngle + 360]
+                    }}
+                    transition={{
+                      duration: 6 + idx * 2,
+                      repeat: Infinity,
+                      ease: "linear"
+                    }}
+                    style={{ transformOrigin: "300px 300px" }}
+                  >
+                    <motion.circle
+                      initial={{ scale: 0, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      transition={{ duration: 0.5, delay: 1.2 + idx * 0.1 }}
+                      cx={300 + 100 * Math.cos((startAngle * Math.PI) / 180)}
+                      cy={300 + 100 * Math.sin((startAngle * Math.PI) / 180)}
+                      r="6"
+                      fill={idx % 2 === 0 ? '#00F0FF' : '#B026FF'}
+                      filter="url(#starGlow)"
+                    />
+                  </motion.g>
+                ))}
+                
+                {/* Floating Particles */}
+                {[...Array(12)].map((_, i) => {
+                  const angle = (i * 30);
+                  const distance = 180 + (i % 3) * 30;
+                  const particleColors = ['#00F0FF', '#B026FF', '#7B2CBF'];
+                  return (
+                    <motion.circle
+                      key={`particle-${i}`}
+                      animate={{
+                        opacity: [0.3, 0.8, 0.3],
+                        scale: [1, 1.5, 1],
+                        x: [0, Math.random() * 20 - 10, 0],
+                        y: [0, Math.random() * 20 - 10, 0]
+                      }}
+                      transition={{
+                        duration: 3 + i * 0.2,
+                        repeat: Infinity,
+                        delay: i * 0.2
+                      }}
+                      cx={300 + distance * Math.cos((angle * Math.PI) / 180)}
+                      cy={300 + distance * Math.sin((angle * Math.PI) / 180)}
+                      r="2"
+                      fill={particleColors[i % 3]}
+                      filter="url(#starGlow)"
+                    />
+                  );
+                })}
+                
+                {/* Labels */}
+                <motion.text
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.8, delay: 1.5 }}
+                  x="300"
+                  y="400"
+                  textAnchor="middle"
+                  fill="url(#sunGradient)"
+                  fontSize="20"
+                  fontWeight="700"
+                  filter="url(#sunGlow)"
+                >
+                  {lang === "fr" ? "IA Agentique" : "Agentic AI"}
+                </motion.text>
+                
+                <motion.text
+                  initial={{ opacity: 0 }}
+                  animate={{ 
+                    opacity: 1,
+                    x: [
+                      300 + 210 * Math.cos(0),
+                      300 + 210 * Math.cos(Math.PI / 4),
+                      300 + 210 * Math.cos(Math.PI / 2),
+                      300 + 210 * Math.cos(3 * Math.PI / 4),
+                      300 + 210 * Math.cos(Math.PI),
+                      300 + 210 * Math.cos(5 * Math.PI / 4),
+                      300 + 210 * Math.cos(3 * Math.PI / 2),
+                      300 + 210 * Math.cos(7 * Math.PI / 4),
+                      300 + 210 * Math.cos(2 * Math.PI)
+                    ],
+                    y: [
+                      300 + 210 * Math.sin(0) + 60,
+                      300 + 210 * Math.sin(Math.PI / 4) + 60,
+                      300 + 210 * Math.sin(Math.PI / 2) + 60,
+                      300 + 210 * Math.sin(3 * Math.PI / 4) + 60,
+                      300 + 210 * Math.sin(Math.PI) + 60,
+                      300 + 210 * Math.sin(5 * Math.PI / 4) + 60,
+                      300 + 210 * Math.sin(3 * Math.PI / 2) + 60,
+                      300 + 210 * Math.sin(7 * Math.PI / 4) + 60,
+                      300 + 210 * Math.sin(2 * Math.PI) + 60
+                    ]
+                  }}
+                  transition={{
+                    opacity: { duration: 0.8, delay: 1.8 },
+                    x: { duration: 25, repeat: Infinity, ease: "linear" },
+                    y: { duration: 25, repeat: Infinity, ease: "linear" }
+                  }}
+                  textAnchor="middle"
+                  fill="url(#planetGradient)"
+                  fontSize="17"
+                  fontWeight="700"
+                  filter="url(#planetGlow)"
+                >
+                  {lang === "fr" ? "IA Responsable" : "Responsible AI"}
+                </motion.text>
+              </svg>
+            </motion.div>
+          </div>
         </div>
       </section>
 
-      {/* Value Highlight #1 */}
-      <section className="section py-12">
-        <div className="mx-auto max-w-5xl px-6 text-center">
-          <h3 className="text-2xl md:text-4xl font-medium tracking-tight neon-text">
-            {lang === "fr"
-              ? "HerixAI transforme des données complexes en solutions intelligentes qui créent de la valeur mesurable."
-              : "HerixAI transforms complex data into intelligent solutions that create measurable business value."}
-          </h3>
-        </div>
-      </section>
-
-      <section id="services" className="section py-24">
+      <section id="expertise" className="section py-20">
         <div className="mx-auto max-w-7xl px-6">
-          <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5 }} className="text-3xl md:text-4xl font-medium mb-10">{i.services.title}</motion.h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {i.services.items.map((s, idx) => (
-              <motion.div key={idx} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.4, delay: idx * 0.05 }} className="glass-card p-6 rounded-2xl border border-foreground/10 hover:border-electric/40 hover:glow-electric transition">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+            className="mb-16"
+          >
+            <h2 className="text-3xl md:text-5xl font-bold mb-4 neon-text">{i.expertise.title}</h2>
+            <p className="text-xl md:text-2xl text-electric font-medium mb-4">{i.expertise.subtitle}</p>
+            <p className="text-lg text-foreground/70 leading-relaxed max-w-4xl">{i.expertise.description}</p>
+          </motion.div>
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            {i.expertise.items.map((s, idx) => (
+              <motion.div key={idx} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.4, delay: idx * 0.1 }} className="glass-card p-8 rounded-2xl border border-foreground/10 hover:border-electric/50 transition-all duration-300 flex flex-col">
                 <div className="flex items-center gap-3 mb-4">
                   {s.icon}
                   <div className="text-electric text-xl font-medium">{s.title}</div>
                 </div>
                 <div className="text-lg font-medium text-foreground mb-2">{s.headline}</div>
                 <div className="text-foreground/70 mb-4">{s.subtitle}</div>
-                <div className="text-foreground/80 leading-relaxed whitespace-pre-line">{s.desc}</div>
+                <div className="text-foreground/80 leading-relaxed whitespace-pre-line mb-6 flex-grow">{s.desc}</div>
+                <Link 
+                  href={s.link} 
+                  className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl border border-electric text-electric hover:bg-electric hover:text-black transition self-start"
+                >
+                  {i.expertise.learnMore} <FaArrowDown className="rotate-[-90deg]" />
+                </Link>
               </motion.div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Value Highlight #2 */}
-      <section className="section py-12">
-        <div className="mx-auto max-w-5xl px-6 text-center">
-          <h3 className="text-2xl md:text-4xl font-medium tracking-tight neon-text">
-            {lang === "fr"
-              ? "De la recherche au déploiement : des systèmes d’IA scalables qui améliorent l’efficacité, réduisent les coûts et stimulent l’innovation."
-              : "From research to deployment: scalable AI systems that improve efficiency, reduce costs, and drive innovation."}
-          </h3>
-        </div>
-      </section>
-
-      <section id="projects" className="section py-24">
+      {/* Collaboration Models */}
+      <section id="collaboration" className="section py-20 bg-gradient-to-b from-transparent via-electric/5 to-transparent">
         <div className="mx-auto max-w-7xl px-6">
-          <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5 }} className="text-3xl md:text-4xl font-medium mb-10">{i.projects.title}</motion.h2>
-          
-          <motion.div 
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
-            layout
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+            className="mb-16"
           >
-            {(showAllProjects ? i.projects.items : i.projects.items.slice(0, 8)).map((p, idx) => (
+            <h2 className="text-3xl md:text-5xl font-bold mb-4 neon-text">{i.collaboration.title}</h2>
+            <p className="text-xl md:text-2xl text-electric font-medium mb-4">{i.collaboration.subtitle}</p>
+            <p className="text-lg text-foreground/70 leading-relaxed max-w-4xl">{i.collaboration.description}</p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {i.collaboration.items.map((model, idx) => (
               <motion.div
-                key={p.github.split('/').pop()}
+                key={idx}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: idx * 0.05 }}
-                onClick={() => setSelectedProject(p)}
-                className="group glass-card p-4 rounded-2xl border border-foreground/10 hover:border-electric/40 hover:glow-electric transition-all duration-300 cursor-pointer"
-                layout
+                transition={{ duration: 0.5, delay: idx * 0.1 }}
+                className="glass-card p-8 rounded-2xl border border-foreground/10 hover:border-neon-purple/50 transition-all duration-300"
               >
-                <Image src={p.image} alt={p.title} width={1200} height={800} className="h-32 w-full rounded-xl object-cover mb-3" />
-                
-                <div className="text-lg font-medium mb-2 text-foreground line-clamp-2">{p.title}</div>
-                
-                <div className="text-foreground/60 text-xs mb-3">{p.stack}</div>
-                
-                <div className="flex items-center justify-between">
-                  <span className="text-electric text-sm font-medium">
-                    {lang === "fr" ? "En savoir plus" : "Learn More"}
-                  </span>
-                  <FaExternalLinkAlt className="text-electric text-xs" />
-                </div>
+                <h3 className="text-xl font-bold text-electric mb-3">{model.title}</h3>
+                <p className="text-foreground/70 mb-6 leading-relaxed">{model.description}</p>
+                <ul className="space-y-3">
+                  {model.bullets.map((bullet, bidx) => (
+                    <li key={bidx} className="flex items-start gap-3">
+                      <span className="text-electric text-lg mt-0.5">•</span>
+                      <span className="text-foreground/80 text-sm leading-relaxed">{bullet}</span>
+                    </li>
+                  ))}
+                </ul>
               </motion.div>
             ))}
-          </motion.div>
-          
-          {i.projects.items.length > 8 && (
-            <motion.div 
-              className="flex justify-center mt-12"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.3 }}
-            >
-              <button
-                onClick={() => setShowAllProjects(!showAllProjects)}
-                className="glass-card px-8 py-4 rounded-2xl border border-electric/40 hover:border-electric hover:glow-electric transition-all duration-300 group"
-              >
-                <div className="flex items-center gap-3">
-                  <span className="text-electric font-medium text-lg">
-                    {showAllProjects 
-                      ? (lang === "fr" ? "Voir moins" : "Show Less")
-                      : (lang === "fr" ? "Voir plus de projets" : "Show More Projects")
-                    }
-                  </span>
-                  <motion.div
-                    animate={{ rotate: showAllProjects ? 180 : 0 }}
-                    transition={{ duration: 0.3 }}
-                    className="text-electric"
-                  >
-                    <FaArrowDown />
-                  </motion.div>
-                </div>
-              </button>
-            </motion.div>
-          )}
-        </div>
-      </section>
-
-      {/* Project Modal */}
-      {selectedProject && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          className="fixed inset-0 z-50 flex items-center justify-center p-4"
-          onClick={() => setSelectedProject(null)}
-        >
-          {/* Backdrop */}
-          <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" />
-          
-          {/* Modal Content */}
-          <motion.div
-            initial={{ scale: 0.9, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            exit={{ scale: 0.9, opacity: 0 }}
-            transition={{ type: "spring", duration: 0.5 }}
-            className="relative bg-background max-w-4xl w-full max-h-[90vh] overflow-y-auto rounded-3xl border border-electric/20 shadow-2xl"
-            onClick={(e) => e.stopPropagation()}
-          >
-            {/* Close Button */}
-            <button
-              onClick={() => setSelectedProject(null)}
-              className="absolute top-4 right-4 z-10 bg-background/80 backdrop-blur-sm p-2 rounded-full border border-foreground/20 hover:border-electric/40 hover:glow-electric transition-all duration-300"
-            >
-              <FaTimes className="text-foreground/60 hover:text-electric transition-colors" />
-            </button>
-            
-            {/* Modal Header */}
-            <div className="p-8 pb-4">
-              <Image 
-                src={selectedProject.gif || selectedProject.image} 
-                alt={selectedProject.title} 
-                width={1200} 
-                height={600} 
-                className="h-96 w-full rounded-2xl object-contain mb-6 bg-background/5" 
-              />
-              
-              <h3 className="text-3xl font-medium mb-4 text-foreground">{selectedProject.title}</h3>
-              
-              {selectedProject.description && (
-                <div className="text-foreground/80 text-lg mb-4 font-medium">{selectedProject.description}</div>
-              )}
-              
-              {selectedProject.solution && (
-                <div className="text-electric text-lg mb-4 font-medium bg-gradient-to-r from-electric/10 to-transparent py-3 px-4 rounded-xl">
-                  {selectedProject.solution}
-                </div>
-              )}
-              
-              {selectedProject.details && (
-                <div className="text-foreground/70 text-base mb-6 leading-relaxed">{selectedProject.details}</div>
-              )}
-              
-              <div className="text-foreground/60 text-sm mb-6 font-medium">{selectedProject.stack}</div>
-            </div>
-            
-            {/* Modal Footer */}
-            <div className="p-8 pt-4 border-t border-foreground/10">
-              <div className="flex gap-4">
-                {selectedProject.demo && (
-                  <a 
-                    href={selectedProject.demo} 
-                    target="_blank" 
-                    rel="noreferrer noopener"
-                    className="flex-1 bg-electric text-black font-medium px-6 py-3 rounded-xl text-center hover:bg-electric/90 transition flex items-center justify-center gap-2"
-                  >
-                    <FaExternalLinkAlt />
-                    {lang === "fr" ? "Voir la démo" : "View Demo"}
-                  </a>
-                )}
-                <a 
-                  href={selectedProject.github} 
-                  target="_blank" 
-                  rel="noreferrer noopener"
-                  className={`${selectedProject.demo ? 'flex-1' : 'w-full'} border border-electric text-electric font-medium px-6 py-3 rounded-xl text-center hover:bg-electric hover:text-black transition flex items-center justify-center gap-2`}
-                >
-                  <FaGithub />
-                  {lang === "fr" ? "Voir sur GitHub" : "View on GitHub"}
-                </a>
-              </div>
-            </div>
-          </motion.div>
-        </motion.div>
-      )}
-
-      {/* Value Highlight #3 */}
-      <section className="section py-12">
-        <div className="mx-auto max-w-5xl px-6 text-center">
-          <h3 className="text-2xl md:text-4xl font-medium tracking-tight neon-text">
-            {lang === "fr"
-              ? "Allier machine learning avancé, IA générative et expertise conformité pour une adoption de l’IA digne de confiance."
-              : "Bringing together advanced machine learning, generative AI, and compliance expertise for trustworthy AI adoption."}
-          </h3>
-        </div>
-      </section>
-
-      <section id="about" className="section py-24">
-        <div className="mx-auto max-w-7xl px-6">
-          <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5 }} className="text-3xl md:text-4xl font-medium mb-10">{i.about.title}</motion.h2>
-          <div className="grid md:grid-cols-2 gap-8 items-start">
-            <motion.div initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.5 }} className="rounded-2xl overflow-hidden">
-              <Image src="/images/yousef.png" alt="Yousef Taheri" width={800} height={1000} className="h-72 md:h-96 w-full object-cover" />
-            </motion.div>
-            <motion.div initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.5 }} className="space-y-4">
-              <p className="text-foreground/80 text-lg leading-relaxed">{i.about.text}</p>
-              <div className="flex items-center gap-4">
-                <a className="glass-card p-3 rounded-2xl hover:glow-electric" href="https://www.linkedin.com/in/yousef-taheri" target="_blank" rel="noreferrer noopener" aria-label="Yousef Taheri LinkedIn">
-                  <FaLinkedin className="text-electric" />
-                </a>
-                <span className="text-foreground/60 text-sm">
-                  {lang === "fr" ? "Connectez-vous avec Yousef sur LinkedIn" : "Connect with Yousef on LinkedIn"}
-                </span>
-              </div>
-            </motion.div>
           </div>
         </div>
       </section>
 
-      {/* Value Highlight #4 */}
-      <section className="section py-12">
-        <div className="mx-auto max-w-5xl px-6 text-center">
-          <h3 className="text-2xl md:text-4xl font-medium tracking-tight neon-text">
-            {lang === "fr"
-              ? "HerixAI veille à ce que votre IA soit non seulement puissante — mais aussi transparente, équitable et conforme aux réglementations internationales."
-              : "HerixAI ensures your AI is not only powerful — but also transparent, fair, and compliant with global regulations."}
-          </h3>
-        </div>
-      </section>
-
-      {/* Publications & Insights */}
-      <section id="publications" className="section py-24">
+      {/* Insights */}
+      <section id="insights" className="section py-20">
         <div className="mx-auto max-w-7xl px-6">
-          <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5 }} className="text-3xl md:text-4xl font-medium mb-10">{i.publications.title}</motion.h2>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+            className="mb-16"
+          >
+            <h2 className="text-3xl md:text-5xl font-bold mb-4 neon-text">{i.insights.title}</h2>
+            <p className="text-xl md:text-2xl text-electric font-medium mb-4">{i.insights.subtitle}</p>
+            <p className="text-lg text-foreground/70 leading-relaxed max-w-4xl">{i.insights.description}</p>
+          </motion.div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {i.publications.items.map((p, idx) => (
+            {i.insights.items.map((p, idx) => (
               <motion.a
                 href={p.href}
                 key={p.title}
-                target="_blank"
+          target="_blank"
                 rel="noreferrer noopener"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: idx * 0.1 }}
-                className="group glass-card p-6 rounded-2xl border border-foreground/10 hover:border-electric/40 hover:glow-electric transition block"
+                className="group glass-card p-6 rounded-2xl border border-foreground/10 hover:border-accent/50 transition block"
               >
                 <div className="flex items-center gap-3 mb-4">
                   {p.icon}
@@ -724,21 +922,19 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Value Highlight #5 */}
-      <section className="section py-12">
-        <div className="mx-auto max-w-5xl px-6 text-center">
-          <h3 className="text-2xl md:text-4xl font-medium tracking-tight neon-text">
-            {lang === "fr"
-              ? "Aider les entreprises à accélérer leur croissance avec des solutions d'IA pratiques, fiables et pérennes."
-              : "Helping companies accelerate growth with AI solutions that are practical, reliable, and future-proof."}
-          </h3>
-        </div>
-      </section>
-
-      <section id="contact" className="section py-24">
+      <section id="contact" className="section py-20">
         <div className="mx-auto max-w-7xl px-6">
-          <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5 }} className="text-3xl md:text-4xl font-medium mb-10">{i.contact.title}</motion.h2>
-          <p className="text-foreground/80 max-w-2xl">{i.contact.text}</p>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+            className="mb-12"
+          >
+            <h2 className="text-3xl md:text-5xl font-bold mb-4 neon-text">{i.contact.title}</h2>
+            <p className="text-xl md:text-2xl text-electric font-medium mb-4">{i.contact.subtitle}</p>
+            <p className="text-lg text-foreground/70 leading-relaxed max-w-4xl mb-6">{i.contact.description}</p>
+          </motion.div>
           <form 
             className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-4" 
             onSubmit={async (e) => {
@@ -779,7 +975,7 @@ export default function Home() {
             <input name="email" type="email" placeholder={i.contact.email} required className="glass-card rounded-2xl px-4 py-3 bg-card/60 border border-foreground/10 focus:outline-none focus:border-electric" />
             <textarea name="message" placeholder={i.contact.message} required className="glass-card rounded-2xl px-4 py-3 bg-card/60 border border-foreground/10 focus:outline-none focus:border-electric md:col-span-2 h-36" />
             <div className="md:col-span-2">
-              <button type="submit" className="px-6 py-3 rounded-2xl bg-electric text-black font-medium glow-electric hover:scale-[1.02] transition">{i.contact.send}</button>
+              <button type="submit" className="px-6 py-3 rounded-2xl bg-electric text-white font-medium hover:scale-[1.02] transition shadow-lg shadow-electric/30">{i.contact.send}</button>
             </div>
           </form>
           {formSubmitted ? (
@@ -798,20 +994,21 @@ export default function Home() {
             </div>
           )}
           <div className="flex items-center gap-4 mt-8">
-            <a className="glass-card p-3 rounded-2xl hover:glow-electric" href="https://www.linkedin.com/company/herixai/" target="_blank" rel="noreferrer noopener" aria-label="HerixAI LinkedIn"><FaLinkedin /></a>
-            <a className="glass-card p-3 rounded-2xl hover:glow-electric" href="https://github.com/heritai" target="_blank" rel="noreferrer noopener" aria-label="GitHub"><FaGithub /></a>
-            <a className="glass-card p-3 rounded-2xl hover:glow-electric" href="https://herixai.com" target="_blank" rel="noreferrer noopener" aria-label="Website"><FaGlobe /></a>
+            <a className="glass-card p-3 rounded-2xl hover:border-electric transition" href="https://www.linkedin.com/company/herixai/" target="_blank" rel="noreferrer noopener" aria-label="HerixAI LinkedIn"><FaLinkedin /></a>
+            <a className="glass-card p-3 rounded-2xl hover:border-electric transition" href="https://github.com/heritai" target="_blank" rel="noreferrer noopener" aria-label="GitHub"><FaGithub /></a>
+            <a className="glass-card p-3 rounded-2xl hover:border-electric transition" href="https://herixai.com" target="_blank" rel="noreferrer noopener" aria-label="Website"><FaGlobe /></a>
           </div>
         </div>
       </section>
 
-      <footer className="border-t border-foreground/10 py-10">
+      <footer className="border-t border-foreground/10 py-12">
         <div className="mx-auto max-w-7xl px-6 flex flex-col md:flex-row items-center justify-between gap-4 text-foreground/70">
           <div>{i.footer.rights}</div>
           <div className="flex items-center gap-6 text-sm">
-            <a href="#services" className="hover:text-electric">{i.nav.services}</a>
-            <a href="#projects" className="hover:text-electric">{i.nav.projects}</a>
-            <a href="#publications" className="hover:text-electric">{i.publications.title}</a>
+            <a href="#expertise" className="hover:text-electric">{i.nav.expertise}</a>
+            <a href="#collaboration" className="hover:text-electric">{i.nav.collaboration}</a>
+            <a href="#insights" className="hover:text-electric">{i.nav.insights}</a>
+            <Link href="/about" className="hover:text-electric">{i.nav.about}</Link>
             <a href="#contact" className="hover:text-electric">{i.nav.contact}</a>
           </div>
         </div>
