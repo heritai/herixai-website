@@ -554,7 +554,7 @@ export default function Home() {
                     />
                   ))}
                   
-                  {/* Brain Icon on Agentic AI */}
+                  {/* Brain Icon on Agentic AI - Hidden on mobile */}
                   <motion.foreignObject
                     x="250"
                     y="250"
@@ -564,6 +564,7 @@ export default function Home() {
                     animate={{ scale: 1, opacity: 1 }}
                     transition={{ duration: 0.8, delay: 1.2 }}
                     style={{ overflow: 'visible' }}
+                    className="hidden md:block"
                   >
                     <div className="flex items-center justify-center w-full h-full">
                       <FaBrain className="text-white" style={{ fontSize: '70px', filter: 'drop-shadow(0 0 10px rgba(255,255,255,0.7))' }} />
@@ -652,7 +653,7 @@ export default function Home() {
                     opacity="0.5"
                   />
                   
-                  {/* Shield Icon on Responsible AI - Orbits with the planet */}
+                  {/* Shield Icon on Responsible AI - Hidden on mobile */}
                   <motion.foreignObject
                     width="60"
                     height="60"
@@ -686,6 +687,7 @@ export default function Home() {
                       ease: "linear"
                     }}
                     style={{ overflow: 'visible' }}
+                    className="hidden md:block"
                   >
                     <div className="flex items-center justify-center w-full h-full">
                       <FaShieldAlt className="text-white" style={{ fontSize: '48px', filter: 'drop-shadow(0 0 8px rgba(255,255,255,0.6))' }} />
